@@ -26,18 +26,29 @@ namespace NotQuiteLisp.ParserTests
         {
             var inputText = "1";
             var expectedText = "1";
+            var expectedRule = NQLParser.NUMBER;
 
-            var tree = inputText.ParseWith<NqlLanguage>();
-            tree.ChildCount.ShouldBe(2);
+            TestTerminalParse(inputText, expectedRule, expectedText);
+        }
 
-            var rootElementNode = tree.Children().First();
-            var atomNode = rootElementNode.Children().First();
+        [TestMethod]
+        public void Should_parse_symbol()
+        {
+            var inputText = "abcd";
+            var expectedText = "abcd";
+            var expectedRule = NQLParser.SYMBOL;
 
-            var terminalNode = atomNode.Children().First();
+            TestTerminalParse(inputText, expectedRule, expectedText);
+        }
 
-            var token = (CommonToken) terminalNode.Payload;
-            token.Type.ShouldBe(NQLParser.NUMBER);
-            token.Text.ShouldBe(expectedText);
+        [TestMethod]
+        public void Should_parse_string()
+        {
+            var inputText = "\"this is a string\"";
+            var expectedText = "\"this is a string\"";
+            var expectedRule = NQLParser.STRING;
+
+            TestTerminalParse(inputText, expectedRule, expectedText);
         }
 
         [TestMethod]
@@ -61,7 +72,7 @@ namespace NotQuiteLisp.ParserTests
             var expectedText = "foo";
             var expectedRule = NQLParser.SYMBOL;
 
-            TestTerminalRule(inputText, expectedRule, expectedText);
+            TestListEmbeddedTerminalRule(inputText, expectedRule, expectedText);
         }
 
         [TestMethod]
@@ -71,10 +82,10 @@ namespace NotQuiteLisp.ParserTests
             var expectedText = "1";
             var expectedRule = NQLParser.NUMBER;
 
-            TestTerminalRule(inputText, expectedRule, expectedText);
+            TestListEmbeddedTerminalRule(inputText, expectedRule, expectedText);
         }
 
-        private static void TestTerminalRule(string inputText, int expectedRule, string expectedText)
+        private static void TestListEmbeddedTerminalRule(string inputText, int expectedRule, string expectedText)
         {
             var treeRoot = inputText.ParseWith<NqlLanguage>();
             var rootElement = treeRoot.GetChild(0);
@@ -103,6 +114,25 @@ namespace NotQuiteLisp.ParserTests
 
             payload.Type.ShouldBe(expectedRule);
             payload.Text.ShouldBe(expectedText);
+        }
+
+        private static void TestTerminalParse(string inputText, object expectedRule, string expectedText)
+        {
+            var tree = inputText.ParseWith<NqlLanguage>();
+            tree.ChildCount.ShouldBe(2);
+
+            // Check for a parse error
+            var rootElementNode = tree.Children().First();
+            rootElementNode.GetType().ShouldNotBe(typeof(ErrorNodeImpl));
+
+            var atomNode = rootElementNode.Children().First();
+
+            var terminalNode = atomNode.Children().First();
+
+            var token = (CommonToken) terminalNode.Payload;
+
+            token.Type.ShouldBe(expectedRule);
+            token.Text.ShouldBe(expectedText);
         }
     }
 }

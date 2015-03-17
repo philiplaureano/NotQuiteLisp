@@ -8,7 +8,7 @@ compileUnit : element* EOF;
 
 list : LPAREN (element)* RPAREN;
 
-atom : STRING | NUMBER | SYMBOL | DOT ;
+atom : DOT | STRING | NUMBER | SYMBOL;
 
 element : atom | list;
 
