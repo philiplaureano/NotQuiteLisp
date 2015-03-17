@@ -25,6 +25,8 @@ namespace NotQuiteLisp.ParserTests
         public void Should_parse_number()
         {
             var inputText = "1";
+            var expectedText = "1";
+
             var tree = inputText.ParseWith<NqlLanguage>();
             tree.ChildCount.ShouldBe(2);
 
@@ -35,6 +37,7 @@ namespace NotQuiteLisp.ParserTests
 
             var token = (CommonToken) terminalNode.Payload;
             token.Type.ShouldBe(NQLParser.NUMBER);
+            token.Text.ShouldBe(expectedText);
         }
 
         [TestMethod]

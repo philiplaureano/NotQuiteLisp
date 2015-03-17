@@ -18,10 +18,11 @@ element : atom | list;
 STRING :'"' ( '\\' . | ~('\\'|'"') )* '"'
 	;
 
-SYMBOL_START : ('a'..'z') | ('A'..'Z');
+ALPHA : ('a'..'z') | ('A'..'Z');
+SYMBOL_START : ALPHA;
 
 OPERATOR : '+' | '-' | '*' | '/' | '.';
-SYMBOL : (SYMBOL_START | OPERATOR | DIGIT)+;
+SYMBOL : (SYMBOL_START)+ (ALPHA | OPERATOR | DIGIT)*;
 	
 NUMBER : ('+' | '-')? (DIGIT)+ ('.' (DIGIT)+)?;
 
