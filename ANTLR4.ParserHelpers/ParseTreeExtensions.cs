@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Collections.Generic;
+
 namespace ANTLR4.ParserHelpers
 {
     using Antlr4.Runtime.Tree;
@@ -16,6 +19,15 @@ namespace ANTLR4.ParserHelpers
                 return;
 
             walker.Walk(listener, parseTree);
+        }
+
+        public static IEnumerable<IParseTree> Children(this IParseTree parseTree)
+        {
+            var childCount = parseTree.ChildCount;
+            for (var i = 0; i < childCount; i++)
+            {
+                yield return parseTree.GetChild(i);
+            }
         }
     }
 }

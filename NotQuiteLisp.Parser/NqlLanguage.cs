@@ -1,11 +1,16 @@
-namespace NotQuiteLispParser
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace NotQuiteLisp.Parser
 {
     using ANTLR4.ParserHelpers;
 
     using Antlr4.Runtime;
     using Antlr4.Runtime.Tree;
 
-    public class NqlTreeBuilderStrategy : ITreeBuilderStrategy
+    public class NqlLanguage : ILanguageStrategy
     {
         public ITokenSource CreateTokenSource(ICharStream charStream)
         {

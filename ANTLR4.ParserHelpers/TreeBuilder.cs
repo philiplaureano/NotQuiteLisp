@@ -5,9 +5,9 @@ namespace ANTLR4.ParserHelpers
 
     public class TreeBuilder : ITreeBuilder
     {
-        private readonly ITreeBuilderStrategy _strategy;
+        private readonly ILanguageStrategy _strategy;
 
-        public TreeBuilder(ITreeBuilderStrategy strategy)
+        public TreeBuilder(ILanguageStrategy strategy)
         {
             this._strategy = strategy;
         }
