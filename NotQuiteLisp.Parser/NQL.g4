@@ -8,7 +8,7 @@ compileUnit : element* EOF;
 
 list : LPAREN (element)* RPAREN;
 
-atom : STRING | SYMBOL | NUMBER;
+atom : OPERATOR | STRING | SYMBOL | NUMBER;
 
 element : atom | list;
 
@@ -21,7 +21,7 @@ STRING :'"' ( '\\' . | ~('\\'|'"') )* '"'
 ALPHA : ('a'..'z') | ('A'..'Z');
 SYMBOL_START : ALPHA;
 
-OPERATOR : '+' | '-' | '*' | '/' | '.';
+OPERATOR : '+' | '-' | '*' | '/' | '.' | '#' | '=' | '%' | '^';
 SYMBOL : (SYMBOL_START)+ (ALPHA | OPERATOR | DIGIT)*;
 	
 NUMBER : ('+' | '-')? (DIGIT)+ ('.' (DIGIT)+)?;

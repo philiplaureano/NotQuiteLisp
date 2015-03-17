@@ -32,6 +32,21 @@ namespace NotQuiteLisp.ParserTests
         }
 
         [TestMethod]
+        public void Should_parse_operator()
+        {
+            var operators = new string[] { "+", "-", "/", "*", ".", "#", "=", "%", "^" };
+
+            foreach (var currentOp in operators)
+            {
+                var inputText = currentOp;
+                var expectedText = currentOp;
+                var expectedRule = NQLParser.OPERATOR;
+
+                TestTerminalParse(inputText, expectedRule, expectedText);
+            }
+        }
+
+        [TestMethod]
         public void Should_parse_symbol()
         {
             var inputText = "abcd";
@@ -63,6 +78,16 @@ namespace NotQuiteLisp.ParserTests
             // There should be at least one child list
             rootElement.ChildCount.ShouldBeGreaterThan(0);
             rootElement.GetChild(0).ShouldBeOfType<NQLParser.ListContext>();
+        }
+
+        [TestMethod]
+        public void Should_parse_operator_from_list()
+        {
+            var inputText = "(+)";
+            var expectedText = "+";
+            var expectedRule = NQLParser.OPERATOR;
+
+            TestListEmbeddedTerminalRule(inputText, expectedRule, expectedText);
         }
 
         [TestMethod]
@@ -129,7 +154,7 @@ namespace NotQuiteLisp.ParserTests
 
             var terminalNode = atomNode.Children().First();
 
-            var token = (CommonToken) terminalNode.Payload;
+            var token = (CommonToken)terminalNode.Payload;
 
             token.Type.ShouldBe(expectedRule);
             token.Text.ShouldBe(expectedText);
