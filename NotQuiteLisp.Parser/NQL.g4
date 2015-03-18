@@ -10,18 +10,21 @@ list : LPAREN (element)* RPAREN;
 
 atom : OPERATOR | STRING | SYMBOL | NUMBER;
 
-element : atom | list;
+element : atom | quotedList | list;
+
+quotedList : SINGLE_QUOTE list;
 
 /*
  * Lexer Rules
  */
-STRING :'"' ( '\\' . | ~('\\'|'"') )* '"'
-	;
+STRING :'"' ( '\\' . | ~('\\'|'"') )* '"';
+
+SINGLE_QUOTE : '\'';
 
 ALPHA : ('a'..'z') | ('A'..'Z');
 SYMBOL_START : ALPHA;
 
-OPERATOR : '+' | '-' | '*' | '/' | '.' | '#' | '=' | '%' | '^';
+OPERATOR : '+' | '-' | '*' | '/' | '.' | '#' | '=' | '%' | '^' | '&' |'!' | '|' | '<' | '>' | '>=' | '<=' | '!=' | '&&' | '||' | '~';
 SYMBOL : (SYMBOL_START)+ (ALPHA | OPERATOR | DIGIT)*;
 	
 NUMBER : ('+' | '-')? (DIGIT)+ ('.' (DIGIT)+)?;

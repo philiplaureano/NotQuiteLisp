@@ -32,9 +32,9 @@ namespace NotQuiteLisp.ParserTests
         }
 
         [TestMethod]
-        public void Should_parse_operator()
+        public void Should_parse_operators()
         {
-            var operators = new string[] { "+", "-", "/", "*", ".", "#", "=", "%", "^" };
+            var operators = new string[] { "+", "-", "/", "*", ".", "#", "=", "%", "^", "&", "!", "|", "<", ">", "<=", ">=", "!=", "&&", "||", "~" };
 
             foreach (var currentOp in operators)
             {
@@ -88,6 +88,18 @@ namespace NotQuiteLisp.ParserTests
             var expectedRule = NQLParser.OPERATOR;
 
             TestListEmbeddedTerminalRule(inputText, expectedRule, expectedText);
+        }
+
+        [TestMethod]
+        public void Should_parse_quoted_list()
+        {
+            var inputText = "'(+ 1 2)";
+            var tree = inputText.ParseWith<NqlLanguage>();
+
+            var descendants = tree.Descendants()
+                .Where(d=>d.GetType() == typeof(NQLParser.QuotedListContext));
+
+            descendants.Any().ShouldBe(true);
         }
 
         [TestMethod]

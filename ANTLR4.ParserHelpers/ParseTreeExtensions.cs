@@ -29,5 +29,22 @@ namespace ANTLR4.ParserHelpers
                 yield return parseTree.GetChild(i);
             }
         }
+
+        public static IEnumerable<IParseTree> Descendants(this IParseTree parseTree)
+        {
+            var results = new List<IParseTree>();
+            AddDecendants(parseTree, results);
+
+            return results;
+        }
+
+        private static void AddDecendants(IParseTree parseTree, IList<IParseTree> results)
+        {
+            foreach (var child in parseTree.Children())
+            {
+                AddDecendants(child, results);
+                results.Add(child);
+            }
+        }
     }
 }
