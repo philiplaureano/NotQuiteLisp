@@ -43,6 +43,7 @@
     <Compile Include="AstNode.cs" />
     <Compile Include="ListNode.cs" />
     <Compile Include="NumberNode.cs" />
+    <Compile Include="OperatorNode.cs" />
     <Compile Include="PairNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringNode.cs" />
