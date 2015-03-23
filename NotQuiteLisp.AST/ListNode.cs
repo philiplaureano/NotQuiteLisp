@@ -1,4 +1,4 @@
-namespace NotQuiteLispParser
+namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
 

@@ -5,14 +5,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B597F76D-CAE6-427C-8954-5FFBE529E2F0}</ProjectGuid>
+    <ProjectGuid>{C1B6C075-BEE4-43EE-85E0-CF6DE09B8109}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ANTLR4.ParserHelpers</RootNamespace>
-    <AssemblyName>ANTLR4.ParserHelpers</AssemblyName>
+    <RootNamespace>NotQuiteLisp.AstTests</RootNamespace>
+    <AssemblyName>NotQuiteLisp.AstTests</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <NuGetPackageImportStamp>00ecf593</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,12 +32,24 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
   <ItemGroup>
     <Reference Include="Antlr4.Runtime.net40">
       <HintPath>..\packages\Antlr4.Runtime.4.3.0\lib\net40-client\Antlr4.Runtime.net40.dll</HintPath>
     </Reference>
-    <Reference Include="LinFu.Finders">
-      <HintPath>..\packages\LinFu.Finders.1.0.1\lib\LinFu.Finders.dll</HintPath>
+    <Reference Include="Shouldly">
+      <HintPath>..\packages\Shouldly.2.4.0\lib\net40\Shouldly.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,16 +60,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ITreeBuilder.cs" />
-    <Compile Include="ILanguageStrategy.cs" />
-    <Compile Include="ParseTreeExtensions.cs" />
+    <Compile Include="ParseTreeToAstConversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <Compile Include="TreeBuilder.cs" />
-    <Compile Include="TreeBuilderExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ANTLR4.ParserHelpers\ANTLR4.ParserHelpers.csproj">
+      <Project>{b597f76d-cae6-427c-8954-5ffbe529e2f0}</Project>
+      <Name>ANTLR4.ParserHelpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NotQuiteLisp.AST\NotQuiteLisp.AST.csproj">
+      <Project>{a3e34647-3c14-4f9a-b2e6-eda2d8474bfc}</Project>
+      <Name>NotQuiteLisp.AST</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NotQuiteLisp.Parser\NotQuiteLisp.Parser.csproj">
+      <Project>{e46155bb-98f2-47de-bdbd-8183a20061d5}</Project>
+      <Name>NotQuiteLisp.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NotQuiteLisp.Visitors\NotQuiteLisp.Visitors.csproj">
+      <Project>{ab9535a0-5366-4b5a-bf07-6c2022d4305b}</Project>
+      <Name>NotQuiteLisp.Visitors</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

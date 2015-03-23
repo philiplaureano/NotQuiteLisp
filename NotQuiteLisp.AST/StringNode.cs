@@ -1,4 +1,4 @@
-namespace NotQuiteLispParser
+namespace NotQuiteLisp.AST
 {
     public class StringNode : AstNode
     {

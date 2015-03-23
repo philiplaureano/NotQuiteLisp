@@ -1,4 +1,4 @@
-namespace NotQuiteLispParser
+namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
 
@@ -16,7 +16,7 @@ namespace NotQuiteLispParser
             this._childNodes = new List<AstNode>(childNodes);
         }
 
-        public IEnumerable<AstNode> Children
+        public virtual IEnumerable<AstNode> Children
         {
             get
             {
