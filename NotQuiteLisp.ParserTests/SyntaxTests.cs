@@ -22,6 +22,16 @@ namespace NotQuiteLisp.ParserTests
         }
 
         [TestMethod]
+        public void Should_parse_keyword()
+        {
+            var inputText = ":keyword123";
+            var expectedText = ":keyword123";
+            var expectedRule = NQLParser.KEYWORD;
+
+            TestTerminalParse(inputText, expectedRule, expectedText);
+        }
+
+        [TestMethod]
         public void Should_parse_number()
         {
             var inputText = "1";

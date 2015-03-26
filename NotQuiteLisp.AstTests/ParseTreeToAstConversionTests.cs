@@ -33,6 +33,21 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_generate_keyword_node()
+        {
+            var inputText = ":keyword123";
+            var converter = new ParseTreeConverter();
+            var tree = inputText.ParseWith<NqlLanguage>();
+            AstNode root = converter.Visit(tree);
+
+            root.ShouldNotBe(null);
+            root.Children.Count().ShouldBe(1);
+
+            var keywordNode = (KeywordNode)root.Children.First();
+            keywordNode.Keyword.ShouldBe(":keyword123");
+        }
+
+        [TestMethod]
         public void Should_generate_vector_node()
         {
             var inputText = "[1 2 3]";

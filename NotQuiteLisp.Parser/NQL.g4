@@ -9,7 +9,7 @@ compileUnit : element* EOF;
 vector : LBRACKET (element)* RBRACKET;
 list : LPAREN (element)* RPAREN;
 
-atom : OPERATOR | STRING | SYMBOL | NUMBER;
+atom : OPERATOR | STRING | SYMBOL | NUMBER | KEYWORD;
 
 element : atom | quotedList | list | vector;
 
@@ -30,6 +30,7 @@ SYMBOL : (SYMBOL_START)+ (ALPHA | OPERATOR | DIGIT)*;
 	
 NUMBER : ('+' | '-')? (DIGIT)+ ('.' (DIGIT)+)?;
 
+KEYWORD : ':' (ALPHA | DIGIT)+;
 LPAREN : '(';
 RPAREN : ')';
 

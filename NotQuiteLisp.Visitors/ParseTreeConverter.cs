@@ -28,6 +28,7 @@ namespace NotQuiteLisp.Visitors
             var rootNode = new RootNode(childNodes);
             return rootNode;
         }
+
         public override AstNode VisitVector(NotQuiteLisp.Parser.NQLParser.VectorContext context)
         {
             var children = context.Children()
@@ -88,6 +89,9 @@ namespace NotQuiteLisp.Visitors
 
             if (ruleType == NQLParser.SYMBOL)
                 return new SymbolNode(payload.Text);
+
+            if(ruleType == NQLParser.KEYWORD)
+                return new KeywordNode(payload.Text);
 
             return base.VisitTerminal(node);
         }

@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AstNode.cs" />
+    <Compile Include="KeywordNode.cs" />
     <Compile Include="ListNode.cs" />
     <Compile Include="NumberNode.cs" />
     <Compile Include="OperatorNode.cs" />
