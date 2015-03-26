@@ -6,11 +6,12 @@ grammar NQL;
 
 compileUnit : element* EOF;
 
+vector : LBRACKET (element)* RBRACKET;
 list : LPAREN (element)* RPAREN;
 
 atom : OPERATOR | STRING | SYMBOL | NUMBER;
 
-element : atom | quotedList | list;
+element : atom | quotedList | list | vector;
 
 quotedList : SINGLE_QUOTE list;
 
@@ -31,6 +32,10 @@ NUMBER : ('+' | '-')? (DIGIT)+ ('.' (DIGIT)+)?;
 
 LPAREN : '(';
 RPAREN : ')';
+
+LBRACKET : '[';
+RBRACKET : ']';
+
 DOT : '.';
 
 DIGIT : [0-9]+;

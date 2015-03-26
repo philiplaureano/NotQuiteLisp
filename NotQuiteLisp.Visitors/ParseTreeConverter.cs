@@ -28,6 +28,17 @@ namespace NotQuiteLisp.Visitors
             var rootNode = new RootNode(childNodes);
             return rootNode;
         }
+        public override AstNode VisitVector(NotQuiteLisp.Parser.NQLParser.VectorContext context)
+        {
+            var children = context.Children()
+                .Select(c => this.Visit(c))
+                .Where(c => c != null)
+                .ToArray();
+
+            var vectorNode = new VectorNode(children);
+            return vectorNode;
+        }
+
         public override AstNode VisitAtom(NotQuiteLisp.Parser.NQLParser.AtomContext context)
         {
             var children = context.Children().ToArray();

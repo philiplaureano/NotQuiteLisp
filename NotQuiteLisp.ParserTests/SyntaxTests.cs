@@ -77,6 +77,18 @@ namespace NotQuiteLisp.ParserTests
         }
 
         [TestMethod]
+        public void Should_parse_vector()
+        {
+            var inputText = "[1 2 \"buckle my shoe\"]";
+            var treeRoot = inputText.ParseWith<NqlLanguage>();
+            var rootElement = treeRoot.GetChild(0);
+            rootElement.ShouldBeOfType<NQLParser.ElementContext>();
+
+            var children = rootElement.Children();
+            children.Any(child => child.GetType().Name.StartsWith("Vector"));
+        }
+
+        [TestMethod]
         public void Should_parse_child_list()
         {
             var inputText = "(foo)";

@@ -29,8 +29,28 @@ namespace NotQuiteLisp.AstTests
             var outputNode = converter.VisitCompileUnit(tree);
             (outputNode != null).ShouldBe(true);
 
-
             outputNode.ShouldBeOfType<RootNode>();
+        }
+
+        [TestMethod]
+        public void Should_generate_vector_node()
+        {
+            var inputText = "[1 2 3]";
+            
+            var tree = inputText.ParseWith<NqlLanguage>();
+            var converter = new ParseTreeConverter();
+            AstNode root = converter.Visit(tree);
+
+            root.ShouldNotBe(null);
+            root.Children.Count().ShouldBe(1);
+
+            var vectorNode = root.Children.First();
+            vectorNode.Children.Count().ShouldBe(3);
+
+            var numberNodes = vectorNode.Children.Cast<NumberNode>().ToArray();
+            numberNodes[0].Number.ShouldBe("1");
+            numberNodes[1].Number.ShouldBe("2");
+            numberNodes[2].Number.ShouldBe("3");
         }
 
         [TestMethod]
