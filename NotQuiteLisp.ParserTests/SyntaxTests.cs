@@ -47,6 +47,16 @@ namespace NotQuiteLisp.ParserTests
         }
 
         [TestMethod]
+        public void Should_parse_symbol_with_dot_and_slash()
+        {
+            var inputText = "my.core/abcd";
+            var expectedText = "my.core/abcd";
+            var expectedRule = NQLParser.SYMBOL;
+
+            TestTerminalParse(inputText, expectedRule, expectedText);
+        }
+
+        [TestMethod]
         public void Should_parse_symbol()
         {
             var inputText = "abcd";
