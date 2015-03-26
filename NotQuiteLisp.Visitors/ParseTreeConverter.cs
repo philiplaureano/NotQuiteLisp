@@ -39,12 +39,6 @@ namespace NotQuiteLisp.Visitors
             return Visit(firstChild);
         }
 
-        public override AstNode VisitElement(NotQuiteLisp.Parser.NQLParser.ElementContext context)
-        {
-            // TODO: Unwrap the element and visit the child nodes
-            return base.VisitElement(context);
-        }
-
         public override AstNode VisitList(NotQuiteLisp.Parser.NQLParser.ListContext context)
         {
             var children = context.Children()
