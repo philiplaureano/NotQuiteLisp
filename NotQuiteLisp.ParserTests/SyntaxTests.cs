@@ -22,6 +22,15 @@ namespace NotQuiteLisp.ParserTests
         }
 
         [TestMethod]
+        public void Should_parse_set()
+        {
+            var inputText = "#{a b c}";
+            var tree = inputText.ParseWith<NqlLanguage>();
+            tree.Descendants().Any(t => t.GetType().Name.StartsWith("Set")).ShouldBe(true);
+            return;
+        }
+
+        [TestMethod]
         public void Should_parse_keyword()
         {
             var inputText = ":keyword123";
@@ -129,7 +138,7 @@ namespace NotQuiteLisp.ParserTests
             var tree = inputText.ParseWith<NqlLanguage>();
 
             var descendants = tree.Descendants()
-                .Where(d=>d.GetType() == typeof(NQLParser.QuotedListContext));
+                .Where(d => d.GetType() == typeof(NQLParser.QuotedListContext));
 
             descendants.Any().ShouldBe(true);
         }

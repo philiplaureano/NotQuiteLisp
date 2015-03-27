@@ -8,10 +8,10 @@ compileUnit : element* EOF;
 
 vector : LBRACKET (element)* RBRACKET;
 list : LPAREN (element)* RPAREN;
-
+set : '#' LCURLYBRACE (element)* RCURLYBRACE;
 atom : OPERATOR | STRING | SYMBOL | NUMBER | KEYWORD;
 
-element : atom | quotedList | list | vector;
+element : atom | quotedList | list | vector | set;
 
 quotedList : SINGLE_QUOTE list;
 
@@ -37,6 +37,8 @@ RPAREN : ')';
 LBRACKET : '[';
 RBRACKET : ']';
 
+LCURLYBRACE : '{';
+RCURLYBRACE : '}';
 DOT : '.';
 
 DIGIT : [0-9]+;
