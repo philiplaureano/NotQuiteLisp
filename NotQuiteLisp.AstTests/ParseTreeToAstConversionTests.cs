@@ -33,6 +33,22 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_generate_set_node()
+        {
+            var inputText = "#{1 2 3}";
+            var converter = new ParseTreeConverter();
+            var tree = inputText.ParseWith<NqlLanguage>();
+            AstNode root = converter.Visit(tree);
+
+            root.ShouldNotBe(null);
+            root.Children.Count().ShouldBe(1);
+
+            var setNode = root.Children.Cast<SetNode>().First();
+            setNode.Children.Count().ShouldBe(3);
+            setNode.Children.All(child => child.GetType() == typeof(NumberNode)).ShouldBe(true);
+        }
+
+        [TestMethod]
         public void Should_generate_keyword_node()
         {
             var inputText = ":keyword123";
@@ -51,7 +67,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_generate_vector_node()
         {
             var inputText = "[1 2 3]";
-            
+
             var tree = inputText.ParseWith<NqlLanguage>();
             var converter = new ParseTreeConverter();
             AstNode root = converter.Visit(tree);
@@ -83,7 +99,7 @@ namespace NotQuiteLisp.AstTests
 
             var listNode = root.Children.First();
             listNode.ShouldBeOfType<ListNode>();
-            
+
             var targetNode = (OperatorNode)listNode.Children.First();
             targetNode.Operator.ShouldBe("+");
         }
@@ -169,7 +185,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "(+ 1 2)";
             var tree = inputText.ParseWith<NqlLanguage>();
             var elementDescendant = tree.Descendants()
-                .First(d => d.GetType().Name.StartsWith("Element") && d.Children().Any(c=>c.GetType().Name.StartsWith("List")));
+                .First(d => d.GetType().Name.StartsWith("Element") && d.Children().Any(c => c.GetType().Name.StartsWith("List")));
 
             var converter = new ParseTreeConverter();
             var outputNode = converter.Visit(elementDescendant) as ListNode;

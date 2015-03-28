@@ -53,7 +53,7 @@ namespace NotQuiteLisp.ParserTests
         [TestMethod]
         public void Should_parse_operators()
         {
-            var operators = new string[] { "+", "-", "/", "*", ".", "#", "=", "%", "^", "&", "!", "|", "<", ">", "<=", ">=", "!=", "&&", "||", "~" };
+            var operators = new string[] { "+", "-", "/", "*", ".", "=", "%", "^", "&", "!", "|", "<", ">", "<=", ">=", "!=", "&&", "||", "~" };
 
             foreach (var currentOp in operators)
             {

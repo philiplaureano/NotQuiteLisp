@@ -29,6 +29,16 @@ namespace NotQuiteLisp.Visitors
             return rootNode;
         }
 
+        public override AstNode VisitSet(NotQuiteLisp.Parser.NQLParser.SetContext context)
+        {
+            var children = context.Children()
+                .Select(c => this.Visit(c))
+                .Where(c => c != null)
+                .ToArray();
+
+            var setNode = new SetNode(children);
+            return setNode;
+        }
         public override AstNode VisitVector(NotQuiteLisp.Parser.NQLParser.VectorContext context)
         {
             var children = context.Children()
