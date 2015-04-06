@@ -41,8 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AstNode.cs" />
+    <Compile Include="AtomNode.cs" />
+    <Compile Include="ElementNode.cs" />
+    <Compile Include="KeyValuePairNode.cs" />
     <Compile Include="KeywordNode.cs" />
     <Compile Include="ListNode.cs" />
+    <Compile Include="MapNode.cs" />
     <Compile Include="NumberNode.cs" />
     <Compile Include="OperatorNode.cs" />
     <Compile Include="PairNode.cs" />

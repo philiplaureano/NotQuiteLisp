@@ -69,9 +69,20 @@ namespace NotQuiteLisp.ParserTests
         {
             var inputText = "{:language \"Clojure\" :creator \"Rich Hickey\"}";
             var tree = inputText.ParseWith<NqlLanguage>();
+            var descendants = tree.Descendants().Where(t => t.GetType().Name.StartsWith("Map")).ToArray();            
+            descendants.Any().ShouldBe(true);
+
+            tree.Descendants().Count(t => t.GetType().Name.StartsWith("KeyValue")).ShouldBe(2);
+        }
+        [TestMethod]
+        public void Should_parse_map_with_comma_delimited_entries()
+        {
+            var inputText = "{:language \"Clojure\", :creator \"Rich Hickey\"}";
+            var tree = inputText.ParseWith<NqlLanguage>();
             var descendants = tree.Descendants().Where(t => t.GetType().Name.StartsWith("Map")).ToArray();
             descendants.Any().ShouldBe(true);
 
+            tree.Descendants().Count(node => node.GetType().Name.StartsWith("Error")).ShouldBe(0);
             tree.Descendants().Count(t => t.GetType().Name.StartsWith("KeyValue")).ShouldBe(2);
         }
 

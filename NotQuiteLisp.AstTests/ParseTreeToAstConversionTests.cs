@@ -195,6 +195,22 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_create_map()
+        {
+            var inputText = "{:language \"Clojure\", :creator \"Rich Hickey\"}";
+            var tree = inputText.ParseWith<NqlLanguage>();
+            var converter = new ParseTreeConverter();
+            var rootNode = (RootNode)converter.Visit(tree);
+            rootNode.Children.Count().ShouldBe(1);
+
+            var mapNode = rootNode.Children.Cast<MapNode>().First();
+            mapNode.ShouldNotBe(null);
+
+            var entries = mapNode.Entries.ToArray();
+            entries.Count().ShouldBe(2);
+        }
+
+        [TestMethod]
         public void Should_create_quoted_list()
         {
             var inputText = "'(+ 1 2)";

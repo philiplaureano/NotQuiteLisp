@@ -2,7 +2,7 @@ namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
 
-    public class ListNode : AstNode
+    public class ListNode : ElementNode
     {
         public ListNode(params AstNode[] childNodes)
             : this((IEnumerable<AstNode>)childNodes)

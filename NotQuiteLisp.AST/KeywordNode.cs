@@ -1,6 +1,6 @@
 ﻿namespace NotQuiteLisp.AST
 {
-    public class KeywordNode : AstNode
+    public class KeywordNode : AtomNode
     {
         private readonly string _keyword;
 

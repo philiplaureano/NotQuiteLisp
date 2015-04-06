@@ -1,6 +1,6 @@
 namespace NotQuiteLisp.AST
 {
-    public class NumberNode : AstNode
+    public class NumberNode : AtomNode
     {
         private readonly string _numberText;
 

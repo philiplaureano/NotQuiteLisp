@@ -1,6 +1,6 @@
 namespace NotQuiteLisp.AST
 {
-    public class OperatorNode : AstNode
+    public class OperatorNode : AtomNode
     {
         private readonly string _operator;
 

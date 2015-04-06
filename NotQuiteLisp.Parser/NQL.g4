@@ -9,7 +9,7 @@ compileUnit : element* EOF;
 vector : LBRACKET (element)* RBRACKET;
 list : LPAREN (element)* RPAREN;
 set : '#' LCURLYBRACE (element)* RCURLYBRACE;
-map : '{' (keyValuePair)+ '}';
+map : '{' (keyValuePair)+ (',')* keyValuePair* '}';
 keyValuePair : atom element;
 
 atom : OPERATOR | STRING | SYMBOL | NUMBER | KEYWORD;

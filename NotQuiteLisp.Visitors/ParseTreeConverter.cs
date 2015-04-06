@@ -14,6 +14,39 @@ namespace NotQuiteLisp.Visitors
 
     public class ParseTreeConverter : NQLBaseVisitor<AstNode>
     {
+        public override AstNode VisitMap(NotQuiteLisp.Parser.NQLParser.MapContext context)
+        {
+            var childNodes = new List<AstNode>();
+            foreach (var child in context.Children())
+            {
+                var childNode = Visit(child);
+                if (childNode != null)
+                    childNodes.Add(childNode);
+
+            }
+
+            return new MapNode(childNodes.Cast<KeyValuePairNode>().Where(node => node != null));
+        }
+
+        public override AstNode VisitKeyValuePair(NotQuiteLisp.Parser.NQLParser.KeyValuePairContext context)
+        {
+            var pair = context;
+            var children = pair.Children().ToArray();
+            if (children.Length < 2)
+                return base.VisitKeyValuePair(context);
+
+            var keyContext = children.First();
+            var valueContext = children.Last();
+
+            var key = Visit(keyContext) as AtomNode;
+            var value = Visit(valueContext) as ElementNode;
+
+            if (key == null || value == null)
+                return null;
+
+            return new KeyValuePairNode(key, value);
+        }
+
         public override AstNode VisitCompileUnit(NQLParser.CompileUnitContext context)
         {
             var childNodes = new List<AstNode>();
@@ -100,7 +133,7 @@ namespace NotQuiteLisp.Visitors
             if (ruleType == NQLParser.SYMBOL)
                 return new SymbolNode(payload.Text);
 
-            if(ruleType == NQLParser.KEYWORD)
+            if (ruleType == NQLParser.KEYWORD)
                 return new KeywordNode(payload.Text);
 
             return base.VisitTerminal(node);

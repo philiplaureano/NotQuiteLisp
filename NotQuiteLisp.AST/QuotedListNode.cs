@@ -1,6 +1,6 @@
 namespace NotQuiteLisp.AST
 {
-    public class QuotedListNode : AstNode
+    public class QuotedListNode : ElementNode
     {
         private readonly ListNode _listNode;
 
