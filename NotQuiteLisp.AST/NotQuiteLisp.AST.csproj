@@ -47,6 +47,7 @@
     <Compile Include="KeywordNode.cs" />
     <Compile Include="ListNode.cs" />
     <Compile Include="MapNode.cs" />
+    <Compile Include="NilNode.cs" />
     <Compile Include="NumberNode.cs" />
     <Compile Include="OperatorNode.cs" />
     <Compile Include="PairNode.cs" />

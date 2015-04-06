@@ -111,7 +111,12 @@ namespace NotQuiteLisp.Visitors
                 return new NumberNode(payload.Text);
 
             if (ruleType == NQLParser.SYMBOL)
+            {
+                if (payload.Text == "nil") 
+                    return new NilNode();
+
                 return new SymbolNode(payload.Text);
+            }                
 
             if (ruleType == NQLParser.KEYWORD)
                 return new KeywordNode(payload.Text);

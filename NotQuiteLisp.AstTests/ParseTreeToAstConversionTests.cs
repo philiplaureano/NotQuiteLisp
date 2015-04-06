@@ -224,5 +224,20 @@ namespace NotQuiteLisp.AstTests
 
             outputNode.Children.Count().ShouldBe(1);
         }
+
+        [TestMethod]
+        public void Should_create_nil_nodes()
+        {
+            var inputText = "(nil 1)";
+            var tree = inputText.ParseWith<NqlLanguage>();
+            var converter = new ParseTreeConverter();
+
+            var root = (RootNode)converter.Visit(tree);
+            var listNode = root.Children.Cast<ListNode>().First(c => c != null);
+            var listElements = listNode.Children.ToArray();
+
+            listElements[0].GetType().ShouldBe(typeof(NilNode));
+            listElements[1].GetType().ShouldBe(typeof(NumberNode));
+        }
     }
 }
