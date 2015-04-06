@@ -9,9 +9,12 @@ compileUnit : element* EOF;
 vector : LBRACKET (element)* RBRACKET;
 list : LPAREN (element)* RPAREN;
 set : '#' LCURLYBRACE (element)* RCURLYBRACE;
+map : '{' (keyValuePair)+ '}';
+keyValuePair : atom element;
+
 atom : OPERATOR | STRING | SYMBOL | NUMBER | KEYWORD;
 
-element : atom | quotedList | list | vector | set;
+element : atom | quotedList | list | vector | map | set;
 
 quotedList : SINGLE_QUOTE list;
 

@@ -27,7 +27,6 @@ namespace NotQuiteLisp.ParserTests
             var inputText = "#{a b c}";
             var tree = inputText.ParseWith<NqlLanguage>();
             tree.Descendants().Any(t => t.GetType().Name.StartsWith("Set")).ShouldBe(true);
-            return;
         }
 
         [TestMethod]
@@ -63,6 +62,17 @@ namespace NotQuiteLisp.ParserTests
 
                 TestTerminalParse(inputText, expectedRule, expectedText);
             }
+        }
+
+        [TestMethod]
+        public void Should_parse_map()
+        {
+            var inputText = "{:language \"Clojure\" :creator \"Rich Hickey\"}";
+            var tree = inputText.ParseWith<NqlLanguage>();
+            var descendants = tree.Descendants().Where(t => t.GetType().Name.StartsWith("Map")).ToArray();
+            descendants.Any().ShouldBe(true);
+
+            tree.Descendants().Count(t => t.GetType().Name.StartsWith("KeyValue")).ShouldBe(2);
         }
 
         [TestMethod]
