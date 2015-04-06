@@ -9,6 +9,7 @@ using NotQuiteLisp.Parser;
 namespace NotQuiteLisp.Visitors
 {
     using Antlr4.Runtime;
+    using Antlr4.Runtime.Tree;
 
     using NotQuiteLisp.AST;
 
@@ -16,14 +17,7 @@ namespace NotQuiteLisp.Visitors
     {
         public override AstNode VisitMap(NotQuiteLisp.Parser.NQLParser.MapContext context)
         {
-            var childNodes = new List<AstNode>();
-            foreach (var child in context.Children())
-            {
-                var childNode = Visit(child);
-                if (childNode != null)
-                    childNodes.Add(childNode);
-
-            }
+            var childNodes = GetChildAstNodes(context);
 
             return new MapNode(childNodes.Cast<KeyValuePairNode>().Where(node => node != null));
         }
@@ -49,14 +43,7 @@ namespace NotQuiteLisp.Visitors
 
         public override AstNode VisitCompileUnit(NQLParser.CompileUnitContext context)
         {
-            var childNodes = new List<AstNode>();
-            foreach (var child in context.Children())
-            {
-                var childNode = Visit(child);
-                if (childNode != null)
-                    childNodes.Add(childNode);
-
-            }
+            var childNodes = GetChildAstNodes(context);
 
             var rootNode = new RootNode(childNodes);
             return rootNode;
@@ -64,20 +51,15 @@ namespace NotQuiteLisp.Visitors
 
         public override AstNode VisitSet(NotQuiteLisp.Parser.NQLParser.SetContext context)
         {
-            var children = context.Children()
-                .Select(c => this.Visit(c))
-                .Where(c => c != null)
-                .ToArray();
+            var children = GetChildAstNodes(context);
 
             var setNode = new SetNode(children);
             return setNode;
         }
+
         public override AstNode VisitVector(NotQuiteLisp.Parser.NQLParser.VectorContext context)
         {
-            var children = context.Children()
-                .Select(c => this.Visit(c))
-                .Where(c => c != null)
-                .ToArray();
+            var children = GetChildAstNodes(context);
 
             var vectorNode = new VectorNode(children);
             return vectorNode;
@@ -96,10 +78,7 @@ namespace NotQuiteLisp.Visitors
 
         public override AstNode VisitList(NotQuiteLisp.Parser.NQLParser.ListContext context)
         {
-            var children = context.Children()
-                .Select(c => this.Visit(c))
-                .Where(c => c != null)
-                .ToArray();
+            var children = GetChildAstNodes(context);
 
             var listNode = new ListNode(children);
             return listNode;
@@ -116,6 +95,7 @@ namespace NotQuiteLisp.Visitors
 
             return listNode != null ? new QuotedListNode(listNode) : base.VisitQuotedList(context);
         }
+
         public override AstNode VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode node)
         {
             var payload = (CommonToken)node.Payload;
@@ -137,6 +117,19 @@ namespace NotQuiteLisp.Visitors
                 return new KeywordNode(payload.Text);
 
             return base.VisitTerminal(node);
+        }
+
+        private IEnumerable<AstNode> GetChildAstNodes(IParseTree context)
+        {
+            return GetChildAstNodes(context, this.Visit);
+        }
+
+        private static IEnumerable<AstNode> GetChildAstNodes(IParseTree context, Func<IParseTree, AstNode> visitFunc)
+        {
+            return context.Children()
+                .Select(visitFunc)
+                .Where(c => c != null)
+                .ToArray();
         }
     }
 }
