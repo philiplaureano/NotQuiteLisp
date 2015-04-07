@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooleanEvaluatorTests.cs" />
     <Compile Include="ParseTreeToAstConversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -71,6 +72,10 @@
     <ProjectReference Include="..\NotQuiteLisp.AST\NotQuiteLisp.AST.csproj">
       <Project>{a3e34647-3c14-4f9a-b2e6-eda2d8474bfc}</Project>
       <Name>NotQuiteLisp.AST</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NotQuiteLisp.Core\NotQuiteLisp.Core.csproj">
+      <Project>{61027d1a-a106-46ec-bc07-51aa3ffec976}</Project>
+      <Name>NotQuiteLisp.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\NotQuiteLisp.Parser\NotQuiteLisp.Parser.csproj">
       <Project>{e46155bb-98f2-47de-bdbd-8183a20061d5}</Project>
