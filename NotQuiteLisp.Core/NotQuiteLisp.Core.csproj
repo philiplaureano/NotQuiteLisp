@@ -42,6 +42,8 @@
     <Compile Include="BooleanEvaluator.cs" />
     <Compile Include="IFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeMap.cs" />
+    <Compile Include="TreeMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NotQuiteLisp.AST\NotQuiteLisp.AST.csproj">

@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BooleanEvaluatorTests.cs" />
+    <Compile Include="ParentNodeMappingTests.cs" />
     <Compile Include="ParseTreeToAstConversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
