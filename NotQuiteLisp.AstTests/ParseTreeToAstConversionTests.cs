@@ -47,7 +47,7 @@ namespace NotQuiteLisp.AstTests
             var childNodes = listNode.Children.ToArray();
             childNodes.Count().ShouldBe(1);
 
-            childNodes[0].ShouldBe(BooleanNode.True);
+            childNodes[0].ShouldBeOfType<TrueNode>();
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace NotQuiteLisp.AstTests
             var childNodes = listNode.Children.ToArray();
             childNodes.Count().ShouldBe(1);
 
-            childNodes[0].ShouldBe(BooleanNode.False);
+            childNodes[0].ShouldBeOfType<FalseNode>();            
         }
 
         [TestMethod]

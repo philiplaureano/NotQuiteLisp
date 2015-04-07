@@ -14,7 +14,7 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new NumberNode("1");
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.True);
+            result.ShouldBeOfType<TrueNode>();
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new StringNode("abc");
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.True);
+            result.ShouldBeOfType<TrueNode>();
         }
 
         [TestMethod]
@@ -32,7 +32,7 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new StringNode(string.Empty);
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.False);
+            result.ShouldBeOfType<FalseNode>();
         }
 
         [TestMethod]
@@ -41,7 +41,7 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new StringNode(null);
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.False);
+            result.ShouldBeOfType<FalseNode>();
         }
 
         [TestMethod]
@@ -50,7 +50,7 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new NumberNode("0");
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.False);
+            result.ShouldBeOfType<FalseNode>();
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new NumberNode("abc");
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.False);
+            result.ShouldBeOfType<FalseNode>();
         }
 
         [TestMethod]
@@ -68,25 +68,25 @@ namespace NotQuiteLisp.AstTests
             var inputNode = new NilNode();
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.False);
+            result.ShouldBeOfType<FalseNode>();
         }
 
         [TestMethod]
         public void Should_evaluate_false_for_false()
         {
-            var inputNode = BooleanNode.False;
+            var inputNode = new FalseNode();
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.False);
+            result.ShouldBeOfType<FalseNode>();
         }
 
         [TestMethod]
         public void Should_evaluate_true_for_true()
         {
-            var inputNode = BooleanNode.True;
+            var inputNode = new TrueNode();
             var evaluator = new BooleanEvaluator();
             var result = evaluator.Eval(inputNode);
-            result.ShouldBe(BooleanNode.True);
+            result.ShouldBeOfType<TrueNode>();
         }
     }
 }

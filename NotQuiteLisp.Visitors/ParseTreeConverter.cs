@@ -118,10 +118,10 @@ namespace NotQuiteLisp.Visitors
                     return new NilNode();
 
                 if (text == "true")
-                    return BooleanNode.True;
+                    return new TrueNode();
 
                 if (text == "false")
-                    return BooleanNode.False;
+                    return new FalseNode();
 
                 return new SymbolNode(text);
             }

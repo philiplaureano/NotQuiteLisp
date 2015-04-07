@@ -14,7 +14,7 @@ namespace NotQuiteLisp.Core
                 return Eval(node as NumberNode);
 
             if (node is NilNode)
-                return BooleanNode.False;
+                return new FalseNode();
 
             if (node is BooleanNode)
                 return node;
@@ -31,13 +31,13 @@ namespace NotQuiteLisp.Core
             int value;
             var parsed = int.TryParse(node.Number, out value);
 
-            return parsed && value > 0 ? BooleanNode.True : BooleanNode.False;
+            return parsed && value > 0 ? (AstNode)new TrueNode() : new FalseNode();
         }
 
         private AstNode Eval(StringNode node)
         {
             var text = node.Text;
-            return string.IsNullOrEmpty(text) ? BooleanNode.False : BooleanNode.True;
+            return string.IsNullOrEmpty(text) ? (AstNode)new FalseNode() : new TrueNode();
         }
     }
 }
