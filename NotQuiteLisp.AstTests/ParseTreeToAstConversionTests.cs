@@ -33,6 +33,42 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_generate_true_boolean_node()
+        {
+            var inputText = "(true)";
+            var converter = new ParseTreeConverter();
+            var tree = inputText.ParseWith<NqlLanguage>();
+            
+            var rootNode = (RootNode)converter.Visit(tree);
+            var listNode = rootNode.Children.Cast<ListNode>().First();
+
+            listNode.ShouldNotBe(null);
+            
+            var childNodes = listNode.Children.ToArray();
+            childNodes.Count().ShouldBe(1);
+
+            childNodes[0].ShouldBe(BooleanNode.True);
+        }
+
+        [TestMethod]
+        public void Should_generate_false_boolean_node()
+        {
+            var inputText = "(false)";
+            var converter = new ParseTreeConverter();
+            var tree = inputText.ParseWith<NqlLanguage>();
+
+            var rootNode = (RootNode)converter.Visit(tree);
+            var listNode = rootNode.Children.Cast<ListNode>().First();
+
+            listNode.ShouldNotBe(null);
+
+            var childNodes = listNode.Children.ToArray();
+            childNodes.Count().ShouldBe(1);
+
+            childNodes[0].ShouldBe(BooleanNode.False);
+        }
+
+        [TestMethod]
         public void Should_generate_set_node()
         {
             var inputText = "#{1 2 3}";

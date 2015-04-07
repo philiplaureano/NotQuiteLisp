@@ -101,25 +101,33 @@ namespace NotQuiteLisp.Visitors
             var payload = (CommonToken)node.Payload;
 
             var ruleType = payload.Type;
+            var text = payload.Text;
+
             if (ruleType == NQLParser.OPERATOR)
-                return new OperatorNode(payload.Text);
+                return new OperatorNode(text);
 
             if (ruleType == NQLParser.STRING)
-                return new StringNode(payload.Text);
+                return new StringNode(text);
 
             if (ruleType == NQLParser.NUMBER)
-                return new NumberNode(payload.Text);
+                return new NumberNode(text);
 
             if (ruleType == NQLParser.SYMBOL)
             {
-                if (payload.Text == "nil") 
+                if (text == "nil")
                     return new NilNode();
 
-                return new SymbolNode(payload.Text);
-            }                
+                if (text == "true")
+                    return BooleanNode.True;
+
+                if (text == "false")
+                    return BooleanNode.False;
+
+                return new SymbolNode(text);
+            }
 
             if (ruleType == NQLParser.KEYWORD)
-                return new KeywordNode(payload.Text);
+                return new KeywordNode(text);
 
             return base.VisitTerminal(node);
         }
