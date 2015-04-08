@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AstNodeExtensions.cs" />
     <Compile Include="BooleanEvaluator.cs" />
     <Compile Include="IFunction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

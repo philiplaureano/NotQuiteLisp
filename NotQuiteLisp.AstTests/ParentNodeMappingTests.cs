@@ -16,7 +16,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_be_able_to_determine_parent_from_given_node()
         {
             var inputText = "(def my-name \"Me\")";
-            
+
             var rootNode = inputText.CreateAstNodes();
             var nodeMapper = new TreeMapper();
             var map = nodeMapper.CreateMap(rootNode);
@@ -44,6 +44,26 @@ namespace NotQuiteLisp.AstTests
             {
                 map.GetParentFor(child).ShouldBe(topNode);
             }
+        }
+
+        [TestMethod]
+        public void Should_be_able_to_determine_root_ancestry_from_child_node()
+        {
+            var inputText = "(parent (child))";
+            var rootNode = inputText.CreateAstNodes();
+            var nodeMapper = new TreeMapper();
+            var map = nodeMapper.CreateMap(rootNode);
+
+            var descendants = rootNode.Descendants().ToArray();
+
+            var childNode = descendants.OfType<SymbolNode>().First(node => node.Symbol == "child");
+
+            var ancestryChain = map.GetRootAncestryFor(childNode).ToArray();
+
+            ancestryChain[0].ShouldBe(childNode);
+            ancestryChain[1].ShouldBeOfType<ListNode>();
+            ancestryChain[2].ShouldBeOfType<ListNode>();
+            ancestryChain[3].ShouldBe(rootNode);            
         }
     }
 }

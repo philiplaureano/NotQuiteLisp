@@ -21,5 +21,20 @@ namespace NotQuiteLisp.Core
 
             _parentMap[child] = parent;
         }
+
+        public LinkedList<AstNode> GetRootAncestryFor(AstNode descendantNode)
+        {
+            var results = new LinkedList<AstNode>();
+            results.AddFirst(descendantNode);
+
+            var parentNode = GetParentFor(descendantNode);
+            while (parentNode != null)
+            {
+                results.AddLast(parentNode);
+                parentNode = GetParentFor(parentNode);
+            }
+
+            return results;
+        }
     }
 }
