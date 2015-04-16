@@ -41,6 +41,7 @@ LBRACKET : '[';
 RBRACKET : ']';
 LCURLYBRACE : '{';
 RCURLYBRACE : '}';
+COMMENT : ';' ~[\r\n]* '\r'? '\n' -> skip ;
 DOT : '.';
 
 DIGIT : [0-9]+;

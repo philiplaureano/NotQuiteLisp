@@ -13,6 +13,18 @@ namespace NotQuiteLisp.ParserTests
     public class SyntaxTests
     {
         [TestMethod]
+        public void Should_parse_comment()
+        {
+            var inputText = ";This is a comment" + Environment.NewLine + "(+ 1 2)";
+            var tree = inputText.ParseWith<NqlLanguage>();
+
+            tree.Descendants()
+                .Select(d => d.GetType())
+                .Count(descendantType => descendantType == typeof(ErrorNodeImpl))
+                .ShouldBe(0);
+        }
+
+        [TestMethod]
         public void Should_parse_compile_unit()
         {
             var inputText = "(foo)";
