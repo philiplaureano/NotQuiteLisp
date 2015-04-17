@@ -10,9 +10,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NotQuiteLisp.Visitors</RootNamespace>
     <AssemblyName>NotQuiteLisp.Visitors</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>bbcface8</NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,10 +32,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr4.Runtime.net40">
       <HintPath>..\packages\Antlr4.Runtime.4.3.0\lib\net40-client\Antlr4.Runtime.net40.dll</HintPath>
+    </Reference>
+    <Reference Include="LinFu.Finders">
+      <HintPath>..\packages\LinFu.Finders.1.0.1\lib\LinFu.Finders.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,8 +51,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AstGenerationExtensions.cs" />
+    <Compile Include="IAstVisitor.cs" />
+    <Compile Include="IVisitor.cs" />
     <Compile Include="ParseTreeConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisitableItem.cs" />
+    <Compile Include="VisitorExtensions.cs" />
+    <Compile Include="VisitorMethodNotFoundException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ANTLR4.ParserHelpers\ANTLR4.ParserHelpers.csproj">
