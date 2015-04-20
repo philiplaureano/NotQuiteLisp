@@ -68,6 +68,7 @@
     <Compile Include="ParentNodeMappingTests.cs" />
     <Compile Include="ParseTreeToAstConversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScopingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ANTLR4.ParserHelpers\ANTLR4.ParserHelpers.csproj">
