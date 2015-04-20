@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AstGenerationExtensions.cs" />
+    <Compile Include="AstVisitor.cs" />
     <Compile Include="IAstVisitor.cs" />
     <Compile Include="IVisitor.cs" />
     <Compile Include="ParseTreeConverter.cs" />
