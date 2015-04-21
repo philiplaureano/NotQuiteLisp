@@ -17,7 +17,7 @@ namespace NotQuiteLisp.Visitors
             _targetItem = targetItem;
         }
 
-        public TResult Accept(object visitor)
+        public TResult Accept(object visitor, bool throwOnError)
         {
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
@@ -48,12 +48,15 @@ namespace NotQuiteLisp.Visitors
                 CriteriaType.Optional);
 
             var bestMatch = visitorMethods.BestMatches().FirstOrDefault();
-            if (bestMatch == null)
+            if (bestMatch == null && throwOnError)
                 throw new VisitorMethodNotFoundException();
+
+            if (bestMatch == null)
+                return default(TResult);
 
             var targetMethod = bestMatch.Item;
 
-            var result = targetMethod.Invoke(visitor, new object[] { _targetItem });
+            var result = targetMethod.Invoke(visitor, new[] { _targetItem });
 
             return (TResult)result;
         }
