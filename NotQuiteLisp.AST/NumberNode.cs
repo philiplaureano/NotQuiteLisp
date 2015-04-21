@@ -16,5 +16,10 @@ namespace NotQuiteLisp.AST
                 return this._numberText;
             }
         }
+
+        public override AstNode Clone()
+        {
+            return new NumberNode(_numberText);
+        }
     }
 }

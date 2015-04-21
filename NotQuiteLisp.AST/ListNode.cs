@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
@@ -11,6 +13,12 @@ namespace NotQuiteLisp.AST
         public ListNode(IEnumerable<AstNode> childNodes)
             : base(childNodes)
         {
+        }
+
+        public override AstNode Clone()
+        {
+            var clonedChildren = Children.Select(c => c.Clone()).ToArray();
+            return new ListNode(clonedChildren);
         }
     }
 }

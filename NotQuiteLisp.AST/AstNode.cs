@@ -22,15 +22,17 @@ namespace NotQuiteLisp.AST
 
         protected AstNode(IEnumerable<AstNode> childNodes)
         {
-            this._childNodes = new List<AstNode>(childNodes);
+            _childNodes = new List<AstNode>(childNodes);
         }
 
         public virtual IEnumerable<AstNode> Children
         {
             get
             {
-                return this._childNodes;
+                return _childNodes;
             }
         }
+
+        public abstract AstNode Clone();
     }
 }

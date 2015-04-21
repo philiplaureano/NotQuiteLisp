@@ -16,5 +16,10 @@ namespace NotQuiteLisp.AST
                 return this._symbol;
             }
         }
+
+        public override AstNode Clone()
+        {
+            return new SymbolNode(_symbol);
+        }
     }
 }

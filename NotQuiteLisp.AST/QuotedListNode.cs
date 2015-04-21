@@ -24,5 +24,10 @@ namespace NotQuiteLisp.AST
                 yield return _listNode;
             }
         }
+
+        public override AstNode Clone()
+        {
+            return new QuotedListNode((ListNode)_listNode.Clone());
+        }
     }
 }

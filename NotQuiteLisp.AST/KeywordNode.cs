@@ -16,5 +16,10 @@
                 return this._keyword;
             }
         }
+
+        public override AstNode Clone()
+        {
+            return new KeywordNode(_keyword);
+        }
     }
 }

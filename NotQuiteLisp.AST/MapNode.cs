@@ -1,4 +1,6 @@
-﻿namespace NotQuiteLisp.AST
+﻿using System.Linq.Expressions;
+
+namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
     using System.Linq;
@@ -16,6 +18,12 @@
                 return Children.Select(child => child as KeyValuePairNode)
                     .Where(child => child != null);
             }
+        }
+
+        public override AstNode Clone()
+        {
+            var clonedEntries = Entries.Select(kvp => (KeyValuePairNode)kvp.Clone());
+            return new MapNode(clonedEntries);
         }
     }
 }

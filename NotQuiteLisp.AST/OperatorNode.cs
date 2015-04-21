@@ -16,5 +16,10 @@ namespace NotQuiteLisp.AST
                 return this._operator;
             }
         }
+
+        public override AstNode Clone()
+        {
+            return new OperatorNode(_operator);
+        }
     }
 }
