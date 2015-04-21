@@ -18,5 +18,15 @@ namespace NotQuiteLisp.AstTests
 
             sampleVisitor.NumberOfTimesCalled.ShouldBe(1);
         }
+
+        [TestMethod]
+        public void Should_not_throw_an_exception_when_error_suppression_is_enabled()
+        {
+            var sampleVisitor = new SampleSilentVisitor();
+            IVisitor<AstNode, int> visitor = sampleVisitor;
+            visitor.Visit(new SymbolNode("bar"));
+
+            sampleVisitor.NumberOfTimesCalled.ShouldBe(1);
+        }
     }
 }

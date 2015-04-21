@@ -68,6 +68,7 @@
     <Compile Include="ParentNodeMappingTests.cs" />
     <Compile Include="ParseTreeToAstConversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleSilentVisitor.cs" />
     <Compile Include="SampleVisitor.cs" />
     <Compile Include="ScopingTests.cs" />
   </ItemGroup>
