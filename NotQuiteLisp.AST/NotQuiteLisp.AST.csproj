@@ -62,6 +62,7 @@
     <Compile Include="StringNode.cs" />
     <Compile Include="SymbolNode.cs" />
     <Compile Include="TrueNode.cs" />
+    <Compile Include="VariableDeclarationNode.cs" />
     <Compile Include="VectorNode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

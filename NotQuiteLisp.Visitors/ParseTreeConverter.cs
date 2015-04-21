@@ -107,7 +107,10 @@ namespace NotQuiteLisp.Visitors
                 return new OperatorNode(text);
 
             if (ruleType == NQLParser.STRING)
-                return new StringNode(text);
+            {
+                var unwrappedText = text.TrimStart('\"').TrimEnd('\"');
+                return new StringNode(unwrappedText);
+            }                
 
             if (ruleType == NQLParser.NUMBER)
                 return new NumberNode(text);

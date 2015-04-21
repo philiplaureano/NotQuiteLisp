@@ -167,7 +167,7 @@ namespace NotQuiteLisp.AstTests
             var converter = new ParseTreeConverter();
             var outputNode = converter.Visit(atomDescendant) as StringNode;
             Assert.IsNotNull(outputNode);
-            outputNode.Text.ShouldBe("\"text1\"");
+            outputNode.Text.ShouldBe("text1");
         }
 
         [TestMethod]

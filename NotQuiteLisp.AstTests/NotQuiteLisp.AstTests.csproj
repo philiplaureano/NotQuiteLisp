@@ -71,6 +71,7 @@
     <Compile Include="SampleSilentVisitor.cs" />
     <Compile Include="SampleVisitor.cs" />
     <Compile Include="ScopingTests.cs" />
+    <Compile Include="VariableDeclarationTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ANTLR4.ParserHelpers\ANTLR4.ParserHelpers.csproj">
