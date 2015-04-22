@@ -12,7 +12,7 @@ set : '#' LCURLYBRACE (element)* RCURLYBRACE;
 map : '{' (keyValuePair)+ (',')* keyValuePair* '}';
 keyValuePair : atom element;
 
-atom : OPERATOR | STRING | SYMBOL | NUMBER | KEYWORD;
+atom : SYMBOL | ALPHA | OPERATOR | STRING | NUMBER | KEYWORD;
 
 element : quotedList | list | vector | map | set | atom;
 
@@ -26,11 +26,10 @@ STRING :'"' ( '\\' . | ~('\\'|'"') )* '"';
 SINGLE_QUOTE : '\'';
 
 ALPHA : ('a'..'z') | ('A'..'Z');
-SYMBOL_START : ALPHA;
 
 OPERATOR : '+' | '-' | '*' | '/' | '.' | '=' | '%' | '^' | '&' |'!' | '|' | '<' | '>' | '>=' | '<=' | '!=' | '&&' | '||' | '~';
-SYMBOL : (SYMBOL_START)+ (ALPHA | OPERATOR | DIGIT)*;
-	
+SYMBOL : (ALPHA) (ALPHA | '-' | '.' | '/' | DIGIT)*;
+
 NUMBER : ('+' | '-')? (DIGIT)+ ('.' (DIGIT)+)?;
 
 KEYWORD : ':' (ALPHA | DIGIT)+;

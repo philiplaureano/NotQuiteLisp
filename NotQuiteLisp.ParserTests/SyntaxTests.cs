@@ -197,7 +197,16 @@ namespace NotQuiteLisp.ParserTests
 
             TestListEmbeddedTerminalRule(inputText, expectedRule, expectedText);
         }
+        
+        [TestMethod]
+        public void Should_parse_single_letter_symbol_from_list()
+        {
+            var inputText = "(x)";
+            var expectedText = "x";
+            var expectedRule = NQLParser.ALPHA;
 
+            TestListEmbeddedTerminalRule(inputText, expectedRule, expectedText);
+        }
         [TestMethod]
         public void Should_parse_number_from_list()
         {

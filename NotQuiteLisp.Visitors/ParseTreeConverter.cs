@@ -115,7 +115,7 @@ namespace NotQuiteLisp.Visitors
             if (ruleType == NQLParser.NUMBER)
                 return new NumberNode(text);
 
-            if (ruleType == NQLParser.SYMBOL)
+            if (ruleType == NQLParser.SYMBOL || ruleType == NQLParser.ALPHA)
             {
                 if (text == "nil")
                     return new NilNode();
