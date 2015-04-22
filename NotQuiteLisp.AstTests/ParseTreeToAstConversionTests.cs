@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using NotQuiteLisp.Core;
 using NotQuiteLisp.Parser;
 namespace NotQuiteLisp.AstTests
 {
@@ -111,13 +111,24 @@ namespace NotQuiteLisp.AstTests
             root.ShouldNotBe(null);
             root.Children.Count().ShouldBe(1);
 
-            var vectorNode = root.Children.First();
+            var vectorNode = root.Children.First() as VectorNode;
+            vectorNode.ShouldNotBe(null);
             vectorNode.Children.Count().ShouldBe(3);
 
             var numberNodes = vectorNode.Children.Cast<NumberNode>().ToArray();
             numberNodes[0].Number.ShouldBe("1");
             numberNodes[1].Number.ShouldBe("2");
             numberNodes[2].Number.ShouldBe("3");
+        }
+
+        [TestMethod]
+        public void Should_generate_vector_node_from_list()
+        {
+            var inputText = "(defn sayName [name] (WriteLine name))";
+            var rootNode = inputText.CreateAstNodes();
+            rootNode.ShouldNotBe(null);
+
+            rootNode.Descendants().Any(d => d is VectorNode).ShouldBe(true);
         }
 
         [TestMethod]

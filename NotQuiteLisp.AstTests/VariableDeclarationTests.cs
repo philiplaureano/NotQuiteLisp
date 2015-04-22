@@ -19,11 +19,11 @@ namespace NotQuiteLisp.AstTests
             IVisitor<AstNode, AstNode> converter = new VariableDeclarationConverter();
             var outputNode = converter.Visit(originalRootNode);
 
-            outputNode.Descendants().Any(d => d is VariableDeclarationNode).ShouldBe(true);
+            outputNode.Descendants().Any(d => d is VariableDefinitionNode).ShouldBe(true);
             var declarationNode =
                 outputNode.Descendants()
-                    .Where(d => d is VariableDeclarationNode)
-                    .Cast<VariableDeclarationNode>()
+                    .Where(d => d is VariableDefinitionNode)
+                    .Cast<VariableDefinitionNode>()
                     .First();
 
             declarationNode.Symbol.ShouldBe("text");
@@ -36,7 +36,7 @@ namespace NotQuiteLisp.AstTests
         [TestMethod]
         public void Should_transform_more_than_one_variable_declaration()
         {
-            var inputText = "((def text 321) (def xyz 123))";
+            var inputText = "((def x 321) (def y 123))";
             var originalRootNode = inputText.CreateAstNodes();
 
             IVisitor<AstNode, AstNode> converter = new VariableDeclarationConverter();
@@ -44,12 +44,12 @@ namespace NotQuiteLisp.AstTests
 
             var declarationNodes =
                 outputNode.Descendants()
-                    .Where(d => d is VariableDeclarationNode)
-                    .Cast<VariableDeclarationNode>().ToArray();
+                    .Where(d => d is VariableDefinitionNode)
+                    .Cast<VariableDefinitionNode>().ToArray();
 
             declarationNodes.Count().ShouldBe(2);
-            declarationNodes[0].Symbol.ShouldBe("text");
-            declarationNodes[1].Symbol.ShouldBe("xyz");
+            declarationNodes[0].Symbol.ShouldBe("x");
+            declarationNodes[1].Symbol.ShouldBe("y");
 
             var numberNodes = new[] { declarationNodes[0].Value, declarationNodes[1].Value }.Select(node => node as NumberNode).Where(n => n != null).ToArray();
             numberNodes.ShouldNotBeEmpty();

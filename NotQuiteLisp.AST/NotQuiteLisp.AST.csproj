@@ -51,10 +51,12 @@
     <Compile Include="KeywordNode.cs" />
     <Compile Include="ListNode.cs" />
     <Compile Include="MapNode.cs" />
+    <Compile Include="MethodDefinitionNode.cs" />
     <Compile Include="NilNode.cs" />
     <Compile Include="NumberNode.cs" />
     <Compile Include="OperatorNode.cs" />
     <Compile Include="PairNode.cs" />
+    <Compile Include="ParameterDefinitionNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuotedListNode.cs" />
     <Compile Include="RootNode.cs" />
@@ -62,7 +64,7 @@
     <Compile Include="StringNode.cs" />
     <Compile Include="SymbolNode.cs" />
     <Compile Include="TrueNode.cs" />
-    <Compile Include="VariableDeclarationNode.cs" />
+    <Compile Include="VariableDefinitionNode.cs" />
     <Compile Include="VectorNode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,83 +1,26 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Generic;
 using System.Linq;
 using NotQuiteLisp.AST;
-using NotQuiteLisp.Visitors;
 
 namespace NotQuiteLisp.Core
 {
-    public class VariableDeclarationConverter : AstVisitor<AstNode>
+    public class VariableDeclarationConverter : ListConverter
     {
-        private readonly ConcurrentBag<Guid> _declarations = new ConcurrentBag<Guid>();
-
-        public override AstNode Visit(AstNode subject)
+        public VariableDeclarationConverter()
+            : base(2, "def")
         {
-            if (subject == null)
-                throw new ArgumentNullException("subject");
-
-            try
-            {
-                return Visit(subject, true);
-            }
-            catch (VisitorMethodNotFoundException)
-            {
-                // Clone the node if there is no suitable visitor found
-                return subject.Clone();
-            }
         }
 
-        public AstNode Visit(ListNode node)
+        protected override AstNode CreateConvertedNode(AstNode originalNode, IEnumerable<AstNode> children)
         {
-            // Ignore empty lists
-            if (!node.Children.Any())
-                return node.Clone();
-
-            var clonedChildren = node.Children.Select(Visit);
-
-            // Ignore non-declaration nodes
-            var symbolNode = node.Children.First() as SymbolNode;
-            if (symbolNode == null || symbolNode.Symbol != "def" || !_declarations.Contains(node.NodeId))
-                return new ListNode(clonedChildren);
-
-            var children = node.Children.ToArray();
-
-            // A def statement needs two arguments: 
-            // 1) the variable name as a symbol
-            // 2) the value as an AST node
-            if (children.Length < 3)
-                return new ListNode(clonedChildren);
-
-            var variableNameNode = children[1] as SymbolNode;
-            var valueNode = children[2];
+            var childNodes = children.ToArray();
+            var variableNameNode = childNodes[1] as SymbolNode;
+            var valueNode = childNodes[2];
             if (variableNameNode == null || valueNode == null)
-                return new ListNode(clonedChildren);
+                return new ListNode(childNodes);
 
-            var declaration = new VariableDeclarationNode(variableNameNode.Symbol, valueNode.Clone());
+            var declaration = new VariableDefinitionNode(variableNameNode.Symbol, valueNode.Clone());
             return declaration;
-        }
-
-        public AstNode Visit(RootNode rootNode)
-        {
-            // Search for variable declarations
-            var listNodes = rootNode.Descendants().Where(d => d.GetType() == typeof(ListNode)).Cast<ListNode>();
-            var nonEmptyNodes = listNodes.Where(l => l.Children.Any());
-            var declarationNodes = nonEmptyNodes.Where(l =>
-            {
-                var symbolNode = l.Children.First() as SymbolNode;
-                return symbolNode != null && symbolNode.Symbol == "def";
-            });
-
-            var targetListNodeIds = declarationNodes.Select(node => node.NodeId);
-
-            // Map all the declarations in the tree
-            foreach (var currentId in targetListNodeIds)
-            {
-                _declarations.Add(currentId);
-            }
-
-            // Visit the child nodes
-            var clonedChildren = rootNode.Children.Select(Visit);
-            return new RootNode(clonedChildren);
         }
     }
 }

@@ -14,7 +14,7 @@ keyValuePair : atom element;
 
 atom : SYMBOL | ALPHA | OPERATOR | STRING | NUMBER | KEYWORD;
 
-element : quotedList | list | vector | map | set | atom;
+element : quotedList | vector | list | map | set | atom;
 
 quotedList : SINGLE_QUOTE list;
 

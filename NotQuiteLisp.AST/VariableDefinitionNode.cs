@@ -1,10 +1,10 @@
 ﻿namespace NotQuiteLisp.AST
 {
-    public class VariableDeclarationNode : SymbolNode
+    public class VariableDefinitionNode : SymbolNode
     {
         private readonly AstNode _value;
 
-        public VariableDeclarationNode(string variableName, AstNode value) : base(variableName)
+        public VariableDefinitionNode(string variableName, AstNode value) : base(variableName)
         {
             _value = value;
         }
@@ -16,7 +16,7 @@
 
         public override AstNode Clone()
         {
-            return new VariableDeclarationNode(Symbol, Value);
+            return new VariableDefinitionNode(Symbol, Value);
         }
     }
 }

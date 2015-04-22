@@ -11,5 +11,9 @@ namespace NotQuiteLisp.AST
         public VectorNode(IEnumerable<AstNode> childNodes) : base(childNodes)
         {
         }
+        public override AstNode Clone()
+        {
+            return new VectorNode(Children);
+        }
     }
 }
