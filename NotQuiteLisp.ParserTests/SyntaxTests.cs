@@ -81,7 +81,7 @@ namespace NotQuiteLisp.ParserTests
         {
             var inputText = "{:language \"Clojure\" :creator \"Rich Hickey\"}";
             var tree = inputText.ParseWith<NqlLanguage>();
-            var descendants = tree.Descendants().Where(t => t.GetType().Name.StartsWith("Map")).ToArray();            
+            var descendants = tree.Descendants().Where(t => t.GetType().Name.StartsWith("Map")).ToArray();
             descendants.Any().ShouldBe(true);
 
             tree.Descendants().Count(t => t.GetType().Name.StartsWith("KeyValue")).ShouldBe(2);
@@ -154,6 +154,18 @@ namespace NotQuiteLisp.ParserTests
             rootElement.GetChild(0).ShouldBeOfType<NQLParser.ListContext>();
         }
 
+        [TestMethod]
+        public void Should_parse_multiple_lists_in_a_row()
+        {
+            var inputText = "((def xyz 123)(def xyz abbc))";
+            var treeRoot = inputText.ParseWith<NqlLanguage>();
+
+            var rootElement = treeRoot.GetChild(0);
+            var descendants = rootElement.Descendants().ToArray();
+
+            var errors = descendants.Where(d => d is ErrorNodeImpl).ToArray();
+            errors.Any().ShouldBe(false);
+        }
         [TestMethod]
         public void Should_parse_operator_from_list()
         {

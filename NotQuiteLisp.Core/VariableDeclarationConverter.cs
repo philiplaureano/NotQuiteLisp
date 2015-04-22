@@ -32,10 +32,12 @@ namespace NotQuiteLisp.Core
             if (!node.Children.Any())
                 return node.Clone();
 
+            var clonedChildren = node.Children.Select(Visit);
+
             // Ignore non-declaration nodes
             var symbolNode = node.Children.First() as SymbolNode;
             if (symbolNode == null || symbolNode.Symbol != "def" || !_declarations.Contains(node.NodeId))
-                return node.Clone();
+                return new ListNode(clonedChildren);
 
             var children = node.Children.ToArray();
 
@@ -43,12 +45,12 @@ namespace NotQuiteLisp.Core
             // 1) the variable name as a symbol
             // 2) the value as an AST node
             if (children.Length < 3)
-                return node.Clone();
+                return new ListNode(clonedChildren);
 
             var variableNameNode = children[1] as SymbolNode;
             var valueNode = children[2];
             if (variableNameNode == null || valueNode == null)
-                return node.Clone();
+                return new ListNode(clonedChildren);
 
             var declaration = new VariableDeclarationNode(variableNameNode.Symbol, valueNode.Clone());
             return declaration;
