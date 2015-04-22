@@ -13,5 +13,10 @@
         {
             get { return _value; }
         }
+
+        public override AstNode Clone()
+        {
+            return new VariableDeclarationNode(Symbol, Value);
+        }
     }
 }
