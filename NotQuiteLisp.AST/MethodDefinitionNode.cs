@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using NotQuiteLisp.AST.Interfaces;
 
 namespace NotQuiteLisp.AST
 {
-    public class MethodDefinitionNode : SymbolNode
+    public class MethodDefinitionNode : SymbolNode, IScopeContainer
     {
         private readonly string _methodName;
         private readonly IEnumerable<ParameterDefinitionNode> _parameters;

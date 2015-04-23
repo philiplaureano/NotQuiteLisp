@@ -47,6 +47,9 @@
     <Compile Include="BooleanNode.cs" />
     <Compile Include="ElementNode.cs" />
     <Compile Include="FalseNode.cs" />
+    <Compile Include="Interfaces\IScope.cs" />
+    <Compile Include="Interfaces\IScopeContainer.cs" />
+    <Compile Include="Interfaces\IScopeReference.cs" />
     <Compile Include="KeyValuePairNode.cs" />
     <Compile Include="KeywordNode.cs" />
     <Compile Include="ListNode.cs" />

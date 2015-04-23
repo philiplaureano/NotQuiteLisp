@@ -1,6 +1,4 @@
-﻿using NotQuiteLisp.AST;
-
-namespace NotQuiteLisp.Core
+﻿namespace NotQuiteLisp.AST.Interfaces
 {
     public interface IScope
     {
@@ -8,5 +6,5 @@ namespace NotQuiteLisp.Core
         IScope OuterScope { get; }
         void Define(SymbolNode symbol);
         SymbolNode Resolve(string name);
-    }
+    }    
 }

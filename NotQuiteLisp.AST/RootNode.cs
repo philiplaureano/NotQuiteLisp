@@ -1,10 +1,11 @@
 ﻿using System.Linq;
+using NotQuiteLisp.AST.Interfaces;
 
 namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
 
-    public sealed class RootNode : AstNode
+    public sealed class RootNode : AstNode, IScopeContainer
     {
         public RootNode()
         {

@@ -1,4 +1,6 @@
-﻿namespace NotQuiteLisp.Core
+﻿using NotQuiteLisp.AST.Interfaces;
+
+namespace NotQuiteLisp.Core
 {
     public class AnonymousScope : Scope
     {

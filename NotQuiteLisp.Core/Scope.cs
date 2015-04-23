@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using NotQuiteLisp.AST;
+using NotQuiteLisp.AST.Interfaces;
 
 namespace NotQuiteLisp.Core
 {

@@ -46,7 +46,6 @@
     <Compile Include="AstNodeExtensions.cs" />
     <Compile Include="BooleanEvaluator.cs" />
     <Compile Include="IFunction.cs" />
-    <Compile Include="IScope.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="MethodDeclarationConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
