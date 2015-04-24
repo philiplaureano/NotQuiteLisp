@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using NotQuiteLisp.AST;
 using NotQuiteLisp.AST.Interfaces;
 
@@ -7,10 +9,10 @@ namespace NotQuiteLisp.Core
 {
     public abstract class Scope : IScope
     {
-        private readonly IScope _outerScope;
-
         private readonly ConcurrentDictionary<string, SymbolNode> _symbols =
             new ConcurrentDictionary<string, SymbolNode>();
+
+        private IScope _outerScope;
 
         protected Scope(IScope outerScope)
         {
@@ -22,6 +24,7 @@ namespace NotQuiteLisp.Core
         public IScope OuterScope
         {
             get { return _outerScope; }
+            set { _outerScope = value; }
         }
 
         public virtual void Define(SymbolNode symbol)
@@ -46,6 +49,16 @@ namespace NotQuiteLisp.Core
                 return _outerScope.Resolve(name);
 
             return null;
+        }
+
+        public IEnumerable<KeyValuePair<string, SymbolNode>> Symbols
+        {
+            get { return _symbols; }
+        }
+
+        public void Clear()
+        {
+            _symbols.Clear();
         }
     }
 }

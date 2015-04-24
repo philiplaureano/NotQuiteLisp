@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NotQuiteLisp.AST;
+using NotQuiteLisp.AST.Interfaces;
 using NotQuiteLisp.Core;
 using Shouldly;
 
@@ -15,7 +17,7 @@ namespace NotQuiteLisp.AstTests
         {
             var symbol = new SymbolNode("foo");
             var scope = new AnonymousScope(null);
-            
+
             // Defining the same scope twice should cause an error
             scope.Define(symbol);
             scope.Define(symbol);
@@ -39,7 +41,7 @@ namespace NotQuiteLisp.AstTests
         {
             var symbol = new SymbolNode("foo");
             var scope = new AnonymousScope(null);
-            
+
             scope.Define(symbol);
 
             scope.Resolve("foo").ShouldBe(symbol);
@@ -55,6 +57,33 @@ namespace NotQuiteLisp.AstTests
             parentScope.Define(symbol);
 
             scope.Resolve("foo").ShouldBe(symbol);
+        }
+
+        [TestMethod]
+        public void Should_wrap_root_node_with_global_scope()
+        {
+            var rootNode = new RootNode();
+
+            var builder = new ScopeBuilder();
+            var outputNode = builder.Visit(rootNode);
+
+            outputNode.ShouldBeAssignableTo<IScopeReference>();
+
+            var scopeRef = outputNode as IScopeReference;
+            scopeRef.ShouldNotBe(null);
+            scopeRef.TargetScope.ShouldNotBe(null);
+            scopeRef.TargetScope.ShouldBeOfType<GlobalScope>();
+        }
+
+        [TestMethod]
+        public void Should_wrap_all_symbols_with_anonymous_scopes()
+        {
+            var children = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def") };
+            var rootNode = new RootNode(children);
+
+            var builder = new ScopeBuilder();
+            var outputNode = builder.Visit(rootNode);
+            outputNode.Descendants().Count(d => d is ScopedNode).ShouldBe(2);
         }
     }
 }

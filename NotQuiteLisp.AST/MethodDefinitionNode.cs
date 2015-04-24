@@ -3,7 +3,7 @@ using NotQuiteLisp.AST.Interfaces;
 
 namespace NotQuiteLisp.AST
 {
-    public class MethodDefinitionNode : SymbolNode, IScopeContainer
+    public class MethodDefinitionNode : SymbolNode
     {
         private readonly string _methodName;
         private readonly IEnumerable<ParameterDefinitionNode> _parameters;

@@ -5,7 +5,7 @@ namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
 
-    public sealed class RootNode : AstNode, IScopeContainer
+    public sealed class RootNode : AstNode
     {
         public RootNode()
         {
