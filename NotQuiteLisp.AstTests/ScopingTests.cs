@@ -76,7 +76,7 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
-        public void Should_scope_nested_symbols()
+        public void Should_scope_nested_symbols_but_not_define_them()
         {
             var greatGrandChild = new SymbolNode("ghi");
             var grandChildren = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def"), new ListNode(greatGrandChild) };
@@ -89,15 +89,15 @@ namespace NotQuiteLisp.AstTests
             var builder = new ScopeBuilder(fakeScope);
             var rootScope = builder.Visit(rootNode);
             rootScope.ShouldNotBe(null);
-            rootScope.Descendants().Any().ShouldBe(true);
+            rootScope.Descendants().OfType<BoundScope>().Any().ShouldBe(true);
 
-            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[0])).MustHaveHappened();
-            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[1])).MustHaveHappened();
-            A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[0])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[1])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustNotHaveHappened();
         }
 
         [TestMethod]
-        public void Should_scope_symbols()
+        public void Should_scope_symbols_but_not_define_them()
         {
             var children = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def") };
             var fakeScope = A.Fake<IScope>();
@@ -105,10 +105,12 @@ namespace NotQuiteLisp.AstTests
             var rootNode = new RootNode(children);
 
             var builder = new ScopeBuilder(fakeScope);
-            builder.Visit(rootNode).ShouldNotBe(null);
+            var scope = builder.Visit(rootNode);
+            scope.ShouldNotBe(null);
 
-            A.CallTo(() => fakeScope.Define((SymbolNode)children[0])).MustHaveHappened();
-            A.CallTo(() => fakeScope.Define((SymbolNode)children[1])).MustHaveHappened();
+            scope.Descendants().OfType<BoundScope>().Any().ShouldBe(true);
+            A.CallTo(() => fakeScope.Define((SymbolNode)children[0])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)children[1])).MustNotHaveHappened();
         }
 
         [TestMethod]

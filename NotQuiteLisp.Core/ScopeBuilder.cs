@@ -26,8 +26,6 @@ namespace NotQuiteLisp.Core
 
         public IBoundScope GetScope(SymbolNode node, IScope parentScope)
         {
-            parentScope.Define(node);
-
             return new BoundScope(parentScope, node);
         }
 
@@ -51,7 +49,7 @@ namespace NotQuiteLisp.Core
                 return boundScope;
 
             var variableDeclarations = body.Children
-                .Select(n => n as VariableDefinitionNode)
+                .OfType<VariableDefinitionNode>()
                 .Where(n => n != null)
                 .ToArray();
 
