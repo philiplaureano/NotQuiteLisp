@@ -87,7 +87,9 @@ namespace NotQuiteLisp.AstTests
             var rootNode = new RootNode(children);
 
             var builder = new ScopeBuilder(fakeScope);
-            builder.Visit(rootNode).ShouldNotBe(null);
+            var rootScope = builder.Visit(rootNode);
+            rootScope.ShouldNotBe(null);
+            rootScope.Descendants().Any().ShouldBe(true);
 
             A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[0])).MustHaveHappened();
             A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[1])).MustHaveHappened();
@@ -121,6 +123,20 @@ namespace NotQuiteLisp.AstTests
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
             resultScope.Resolve("message").ShouldNotBe(null);
             resultScope.Resolve("message").ShouldBeOfType<ParameterDefinitionNode>();
+        }
+
+        [TestMethod]
+        public void Should_scope_method_definition()
+        {
+            var body = new ListNode();
+            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
+
+            var globalScope = new GlobalScope();
+
+            var builder = new ScopeBuilder(globalScope);
+            var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
+            resultScope.Resolve("sayMessage").ShouldNotBe(null);
+            resultScope.Resolve("sayMessage").ShouldBeOfType<MethodDefinitionNode>();
         }
 
         [TestMethod]

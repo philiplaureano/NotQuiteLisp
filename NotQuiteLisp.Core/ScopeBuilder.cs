@@ -4,6 +4,7 @@ using NotQuiteLisp.Visitors;
 namespace NotQuiteLisp.Core
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
 
@@ -35,6 +36,9 @@ namespace NotQuiteLisp.Core
             var methodScope = new AnonymousScope(parentScope);
             var boundScope = new BoundScope(methodScope, node);
 
+            // Define the method itself
+            parentScope.Define(node);
+
             // Bind the parameters
             foreach (var parameter in node.Parameters)
             {
@@ -43,7 +47,7 @@ namespace NotQuiteLisp.Core
 
             // Bind the variables
             var body = node.MethodBody;
-            if (body == null) 
+            if (body == null)
                 return boundScope;
 
             var variableDeclarations = body.Children
@@ -61,22 +65,20 @@ namespace NotQuiteLisp.Core
 
         public IBoundScope GetScope(ListNode node, IScope parentScope)
         {
-            foreach (var child in node.Children)
-            {
-                this.Invoke("GetScope", child, _rootScope);
-            }
+            var childScopes = node.Children
+                .Select(child => (IBoundScope)this.Invoke("GetScope", child, parentScope))
+                .ToList();
 
-            return new BoundScope(parentScope, node);
+            return new BoundScope(parentScope, node, childScopes);
         }
 
         public IBoundScope GetScope(RootNode node)
         {
-            foreach (var child in node.Children)
-            {
-                this.Invoke("GetScope", child, _rootScope);
-            }
+            var childScopes = node.Children
+                .Select(child => (IBoundScope)this.Invoke("GetScope", child, this._rootScope))
+                .ToList();
 
-            return new BoundScope(_rootScope, node);
+            return new BoundScope(_rootScope, node, childScopes);
         }
     }
 }

@@ -8,15 +8,15 @@ namespace NotQuiteLisp.Core
 
     public static class AstNodeExtensions
     {
-        public static IEnumerable<INode<AstNode>> Descendants(this INode<AstNode> node, int? maxDepth = null)
+        public static IEnumerable<INode<T>> Descendants<T>(this INode<T> node, int? maxDepth = null)
         {
-            var descendants = new List<INode<AstNode>>();
+            var descendants = new List<INode<T>>();
             AddDescendants(node, descendants, 0, maxDepth);
 
             return descendants;
         }
 
-        private static void AddDescendants(this INode<AstNode> node, IList<INode<AstNode>> descendants, int currentDepth, int? maxDepth = null)
+        private static void AddDescendants<T>(this INode<T> node, ICollection<INode<T>> descendants, int currentDepth, int? maxDepth = null)
         {
             foreach (var child in node.Children)
             {
