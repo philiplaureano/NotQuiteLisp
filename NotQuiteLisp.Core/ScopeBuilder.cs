@@ -1,39 +1,47 @@
-﻿using System;
-using System.Linq;
-using NotQuiteLisp.AST;
+﻿using NotQuiteLisp.AST;
 using NotQuiteLisp.Visitors;
 
 namespace NotQuiteLisp.Core
 {
-    public class ScopeBuilder : AstVisitor<AstNode>
+    using System.Linq.Expressions;
+
+    using NotQuiteLisp.AST.Interfaces;
+
+    public class ScopeBuilder : IVisitor<AstNode, IScope>
     {
-        public override AstNode Visit(AstNode subject)
-        {
-            if (subject == null)
-                throw new ArgumentNullException("subject");
+        private readonly IScope _rootScope;
 
-            try
+        public ScopeBuilder(IScope rootScope)
+        {
+            this._rootScope = rootScope;
+        }
+
+        public IScope Visit(AstNode subject)
+        {
+            return (IScope)this.Invoke("GetScope", subject);
+        }
+
+        public void SetScope(SymbolNode node, IScope parentScope)
+        {
+            parentScope.Define(node);
+        }
+
+        public void SetScope(ListNode node, IScope parentScope)
+        {
+            foreach (var child in node.Children)
             {
-                return Visit(subject, true);
-            }
-            catch (VisitorMethodNotFoundException)
-            {
-                // Clone the node if there is no suitable visitor found
-                return subject.Clone();
+                this.Invoke("SetScope", child, _rootScope);
             }
         }
 
-        public AstNode Visit(SymbolNode node)
+        public IScope GetScope(RootNode node)
         {
-            return new ScopedNode(node, new AnonymousScope(null), delegate { return new AnonymousScope(null); });
-        }
+            foreach (var child in node.Children)
+            {
+                this.Invoke("SetScope", child, _rootScope);
+            }
 
-        public AstNode Visit(RootNode node)
-        {
-            var clonedChildren = node.Children.Select(Visit);
-
-            var newNode = new RootNode(clonedChildren);
-            return new ScopedNode(newNode, new GlobalScope(), delegate { return new GlobalScope(); });
+            return new BoundScope(_rootScope, node);
         }
     }
 }

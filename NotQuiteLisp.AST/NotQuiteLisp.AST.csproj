@@ -62,7 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuotedListNode.cs" />
     <Compile Include="RootNode.cs" />
-    <Compile Include="ScopedNode.cs" />
     <Compile Include="SetNode.cs" />
     <Compile Include="StringNode.cs" />
     <Compile Include="SymbolNode.cs" />

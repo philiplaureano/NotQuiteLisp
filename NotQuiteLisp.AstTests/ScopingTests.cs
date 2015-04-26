@@ -8,6 +8,8 @@ using Shouldly;
 
 namespace NotQuiteLisp.AstTests
 {
+    using FakeItEasy;
+
     [TestClass]
     public class ScopingTests
     {
@@ -60,30 +62,51 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
-        public void Should_wrap_root_node_with_global_scope()
+        public void Should_return_globalscope_for_root_node()
         {
             var rootNode = new RootNode();
 
-            var builder = new ScopeBuilder();
-            var outputNode = builder.Visit(rootNode);
+            var builder = new ScopeBuilder(new GlobalScope());
+            var scope = builder.Visit(rootNode) as BoundScope;
+            scope.ShouldBeOfType<BoundScope>();
+            scope.ShouldNotBe(null);
 
-            outputNode.ShouldBeAssignableTo<IScopeReference>();
-
-            var scopeRef = outputNode as IScopeReference;
-            scopeRef.ShouldNotBe(null);
-            scopeRef.TargetScope.ShouldNotBe(null);
-            scopeRef.TargetScope.ShouldBeOfType<GlobalScope>();
+            scope.Node.ShouldBe(rootNode);
+            scope.TargetScope.ShouldBeOfType<GlobalScope>();
         }
 
         [TestMethod]
-        public void Should_wrap_all_symbols_with_anonymous_scopes()
+        public void Should_scope_nested_symbols()
         {
-            var children = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def") };
+            var greatGrandChild = new SymbolNode("ghi");
+            var grandChildren = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def"), new ListNode(greatGrandChild) };
+
+            var children = new AstNode[] { new ListNode(grandChildren), };
+            var fakeScope = A.Fake<IScope>();
+
             var rootNode = new RootNode(children);
 
-            var builder = new ScopeBuilder();
-            var outputNode = builder.Visit(rootNode);
-            outputNode.Descendants().Count(d => d is ScopedNode).ShouldBe(2);
+            var builder = new ScopeBuilder(fakeScope);
+            builder.Visit(rootNode).ShouldNotBe(null);
+
+            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[0])).MustHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[1])).MustHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustHaveHappened();
+        }
+
+        [TestMethod]
+        public void Should_scope_symbols()
+        {
+            var children = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def") };
+            var fakeScope = A.Fake<IScope>();
+
+            var rootNode = new RootNode(children);
+
+            var builder = new ScopeBuilder(fakeScope);
+            builder.Visit(rootNode).ShouldNotBe(null);
+
+            A.CallTo(() => fakeScope.Define((SymbolNode)children[0])).MustHaveHappened();
+            A.CallTo(() => fakeScope.Define((SymbolNode)children[1])).MustHaveHappened();
         }
     }
 }

@@ -22,8 +22,10 @@ namespace NotQuiteLisp.Visitors
             if (visitor == null)
                 throw new ArgumentNullException("visitor");
 
+            Func<MethodInfo, bool> matchMethodName = m => m.Name.StartsWith("Visit");
+
             var visitorType = visitor.GetType();
-            var visitorMethods = visitorType.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => m.Name.StartsWith("Visit"))
+            var visitorMethods = visitorType.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(matchMethodName)
                 .AsFuzzyList();
 
             visitorMethods.AddCriteria(m => m.ReturnType == typeof(TResult), CriteriaType.Critical);
