@@ -3,6 +3,7 @@ using NotQuiteLisp.Visitors;
 
 namespace NotQuiteLisp.Core
 {
+    using System;
     using System.Linq.Expressions;
 
     using NotQuiteLisp.AST.Interfaces;
@@ -21,24 +22,42 @@ namespace NotQuiteLisp.Core
             return (IScope)this.Invoke("GetScope", subject);
         }
 
-        public void SetScope(SymbolNode node, IScope parentScope)
+        public IScope GetScope(SymbolNode node, IScope parentScope)
         {
             parentScope.Define(node);
+
+            return new BoundScope(parentScope, node);
         }
 
-        public void SetScope(ListNode node, IScope parentScope)
+        public IScope GetScope(MethodDefinitionNode node, IScope parentScope)
+        {
+            var methodScope = new AnonymousScope(parentScope);
+            var boundScope = new BoundScope(methodScope, node);
+
+            // Bind the parameters
+            foreach (var parameter in node.Parameters)
+            {
+                methodScope.Define(parameter);
+            }
+
+            return boundScope;
+        }
+
+        public IScope GetScope(ListNode node, IScope parentScope)
         {
             foreach (var child in node.Children)
             {
-                this.Invoke("SetScope", child, _rootScope);
+                this.Invoke("GetScope", child, _rootScope);
             }
+
+            return new BoundScope(parentScope, node);
         }
 
         public IScope GetScope(RootNode node)
         {
             foreach (var child in node.Children)
             {
-                this.Invoke("SetScope", child, _rootScope);
+                this.Invoke("GetScope", child, _rootScope);
             }
 
             return new BoundScope(_rootScope, node);

@@ -108,5 +108,19 @@ namespace NotQuiteLisp.AstTests
             A.CallTo(() => fakeScope.Define((SymbolNode)children[0])).MustHaveHappened();
             A.CallTo(() => fakeScope.Define((SymbolNode)children[1])).MustHaveHappened();
         }
+
+        [TestMethod]
+        public void Should_scope_parameters()
+        {
+            var body = new ListNode();
+            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[]{new ParameterDefinitionNode("message"), }, body);
+
+            var globalScope = new GlobalScope();
+            
+            var builder = new ScopeBuilder(globalScope);
+            var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
+            resultScope.Resolve("message").ShouldNotBe(null);
+            resultScope.Resolve("message").ShouldBeOfType<ParameterDefinitionNode>();
+        }
     }
 }
