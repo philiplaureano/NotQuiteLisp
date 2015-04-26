@@ -6,12 +6,12 @@
     using NotQuiteLisp.AST;
     using NotQuiteLisp.AST.Interfaces;
 
-    public class BoundScope : IScope
+    public class BoundScope : Node<IScope>, IScope
     {
         private readonly IScope _scope;
-        private readonly AstNode _node;
+        private readonly INode<AstNode> _node;
 
-        public BoundScope(IScope scope, AstNode node)
+        public BoundScope(IScope scope, INode<AstNode> node)
         {
             if (scope == null)
                 throw new ArgumentNullException("scope");
@@ -23,7 +23,20 @@
             _node = node;
         }
 
-        public AstNode Node
+        public BoundScope(IScope scope, INode<AstNode> node, IEnumerable<INode<IScope>> childNodes)
+            : base(childNodes)
+        {
+            if (scope == null)
+                throw new ArgumentNullException("scope");
+
+            if (node == null)
+                throw new ArgumentNullException("node");
+
+            this._scope = scope;
+            this._node = node;
+        }
+
+        public INode<AstNode> Node
         {
             get
             {
@@ -70,6 +83,13 @@
             {
                 return _scope.Symbols;
             }
+        }
+
+        public override INode<IScope> Clone()
+        {            
+            var clone = new BoundScope(_scope, _node, this.Children);
+
+            return clone;
         }
     }
 }
