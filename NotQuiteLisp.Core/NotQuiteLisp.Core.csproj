@@ -51,6 +51,7 @@
     <Compile Include="BooleanEvaluator.cs" />
     <Compile Include="BoundScope.cs" />
     <Compile Include="GlobalScope.cs" />
+    <Compile Include="IBoundScope.cs" />
     <Compile Include="IFunction.cs" />
     <Compile Include="LateBindingExtensions.cs" />
     <Compile Include="ListConverter.cs" />
