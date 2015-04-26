@@ -9,7 +9,7 @@ namespace NotQuiteLisp.Core
 
     using NotQuiteLisp.AST.Interfaces;
 
-    public class ScopeBuilder : IVisitor<AstNode, IScope>
+    public class ScopeBuilder : IVisitor<AstNode, IBoundScope>
     {
         private readonly IScope _rootScope;
 
@@ -18,19 +18,19 @@ namespace NotQuiteLisp.Core
             this._rootScope = rootScope;
         }
 
-        public IScope Visit(AstNode subject)
+        public IBoundScope Visit(AstNode subject)
         {
-            return (IScope)this.Invoke("GetScope", subject);
+            return (IBoundScope)this.Invoke("GetScope", subject);
         }
 
-        public IScope GetScope(SymbolNode node, IScope parentScope)
+        public IBoundScope GetScope(SymbolNode node, IScope parentScope)
         {
             parentScope.Define(node);
 
             return new BoundScope(parentScope, node);
         }
 
-        public IScope GetScope(MethodDefinitionNode node, IScope parentScope)
+        public IBoundScope GetScope(MethodDefinitionNode node, IScope parentScope)
         {
             var methodScope = new AnonymousScope(parentScope);
             var boundScope = new BoundScope(methodScope, node);
@@ -59,7 +59,7 @@ namespace NotQuiteLisp.Core
             return boundScope;
         }
 
-        public IScope GetScope(ListNode node, IScope parentScope)
+        public IBoundScope GetScope(ListNode node, IScope parentScope)
         {
             foreach (var child in node.Children)
             {
@@ -69,7 +69,7 @@ namespace NotQuiteLisp.Core
             return new BoundScope(parentScope, node);
         }
 
-        public IScope GetScope(RootNode node)
+        public IBoundScope GetScope(RootNode node)
         {
             foreach (var child in node.Children)
             {

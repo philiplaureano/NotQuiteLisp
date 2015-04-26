@@ -6,7 +6,11 @@
     using NotQuiteLisp.AST;
     using NotQuiteLisp.AST.Interfaces;
 
-    public class BoundScope : Node<IScope>, IScope
+    public interface IBoundScope : INode<IScope>, IScope
+    {
+        
+    }
+    public class BoundScope : Node<IScope>, IBoundScope
     {
         private readonly IScope _scope;
         private readonly INode<AstNode> _node;
