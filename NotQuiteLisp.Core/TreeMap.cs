@@ -5,16 +5,18 @@ using NotQuiteLisp.AST;
 
 namespace NotQuiteLisp.Core
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class TreeMap
     {
-        private readonly ConcurrentDictionary<AstNode, AstNode> _parentMap = new ConcurrentDictionary<AstNode, AstNode>();
+        private readonly ConcurrentDictionary<INode<AstNode>, INode<AstNode>> _parentMap = new ConcurrentDictionary<INode<AstNode>, INode<AstNode>>();
 
-        public AstNode GetParentFor(AstNode child)
+        public INode<AstNode> GetParentFor(INode<AstNode> child)
         {
             return _parentMap.ContainsKey(child) ? _parentMap[child] : null;
         }
 
-        public void SetParentFor(AstNode child, AstNode parent)
+        public void SetParentFor(INode<AstNode> child, INode<AstNode> parent)
         {
             if (child == null)
                 throw new ArgumentNullException("child");
@@ -22,9 +24,9 @@ namespace NotQuiteLisp.Core
             _parentMap[child] = parent;
         }
 
-        public LinkedList<AstNode> GetRootAncestryFor(AstNode descendantNode)
+        public LinkedList<INode<AstNode>> GetRootAncestryFor(INode<AstNode> descendantNode)
         {
-            var results = new LinkedList<AstNode>();
+            var results = new LinkedList<INode<AstNode>>();
             results.AddFirst(descendantNode);
 
             var parentNode = GetParentFor(descendantNode);

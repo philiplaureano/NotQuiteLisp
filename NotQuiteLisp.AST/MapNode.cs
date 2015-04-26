@@ -5,6 +5,8 @@ namespace NotQuiteLisp.AST
     using System.Collections.Generic;
     using System.Linq;
 
+    using NotQuiteLisp.AST.Interfaces;
+
     public class MapNode : ElementNode
     {
         public MapNode(IEnumerable<KeyValuePairNode> entries) : base(entries)
@@ -20,7 +22,7 @@ namespace NotQuiteLisp.AST
             }
         }
 
-        public override AstNode Clone()
+        public override INode<AstNode> Clone()
         {
             var clonedEntries = Entries.Select(kvp => (KeyValuePairNode)kvp.Clone());
             return new MapNode(clonedEntries);

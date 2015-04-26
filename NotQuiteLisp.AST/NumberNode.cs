@@ -1,5 +1,7 @@
 namespace NotQuiteLisp.AST
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class NumberNode : AtomNode
     {
         private readonly string _numberText;
@@ -17,7 +19,7 @@ namespace NotQuiteLisp.AST
             }
         }
 
-        public override AstNode Clone()
+        public override INode<AstNode> Clone()
         {
             return new NumberNode(_numberText);
         }

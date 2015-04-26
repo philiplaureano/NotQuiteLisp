@@ -2,14 +2,16 @@
 
 namespace NotQuiteLisp.Visitors
 {
-    public class AstVisitor<TResult> : IVisitor<AstNode, TResult>
+    using NotQuiteLisp.AST.Interfaces;
+
+    public class AstVisitor<TResult> : IVisitor<INode<AstNode>, TResult>
     {
-        public virtual TResult Visit(AstNode subject)
+        public virtual TResult Visit(INode<AstNode> subject)
         {
             return Visit(subject, true);
         }
 
-        protected TResult Visit(AstNode subject, bool throwOnError)
+        protected TResult Visit(INode<AstNode> subject, bool throwOnError)
         {
             return subject.Accept<TResult>(this, throwOnError);
         }

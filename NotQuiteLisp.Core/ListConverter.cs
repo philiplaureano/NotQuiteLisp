@@ -5,9 +5,12 @@ namespace NotQuiteLisp.Core
     using System.Collections.Generic;
     using System.Linq;
     using AST;
+
+    using NotQuiteLisp.AST.Interfaces;
+
     using Visitors;
 
-    public abstract class ListConverter : AstVisitor<AstNode>
+    public abstract class ListConverter : AstVisitor<INode<AstNode>>
     {
         private readonly ConcurrentBag<Guid> _declarations = new ConcurrentBag<Guid>();
         private readonly int _expectedParameterCount;
@@ -26,7 +29,7 @@ namespace NotQuiteLisp.Core
 
         private readonly string _targetSymbol;
 
-        public override AstNode Visit(AstNode subject)
+        public override INode<AstNode> Visit(INode<AstNode> subject)
         {
             if (subject == null)
                 throw new ArgumentNullException("subject");
@@ -42,7 +45,7 @@ namespace NotQuiteLisp.Core
             }
         }
 
-        public AstNode Visit(ListNode node)
+        public INode<AstNode> Visit(ListNode node)
         {
             // Ignore empty lists
             if (!node.Children.Any())
@@ -64,7 +67,7 @@ namespace NotQuiteLisp.Core
             return CreateConvertedNode(node, clonedChildren);
         }
 
-        public AstNode Visit(RootNode rootNode)
+        public INode<AstNode> Visit(RootNode rootNode)
         {
             var targetListNodeIds = GetListNodeIds(rootNode, _targetSymbol);
 
@@ -79,9 +82,9 @@ namespace NotQuiteLisp.Core
             return new RootNode(clonedChildren);
         }
 
-        protected abstract AstNode CreateConvertedNode(AstNode originalNode, IEnumerable<AstNode> children);
+        protected abstract INode<AstNode> CreateConvertedNode(INode<AstNode> originalNode, IEnumerable<INode<AstNode>> children);
 
-        private static IEnumerable<Guid> GetListNodeIds(AstNode rootNode, string targetSymbol)
+        private static IEnumerable<Guid> GetListNodeIds(INode<AstNode> rootNode, string targetSymbol)
         {
             // Search for the lists that match the target symbol
             var listNodes = rootNode.Descendants().Where(d => d.GetType() == typeof(ListNode)).Cast<ListNode>();

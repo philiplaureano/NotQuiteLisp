@@ -4,6 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
     using AST;
+
+    using NotQuiteLisp.AST.Interfaces;
+
     using Visitors;
 
     public class MethodDeclarationConverter : ListConverter
@@ -13,7 +16,7 @@
         {
         }
 
-        protected override AstNode CreateConvertedNode(AstNode originalNode, IEnumerable<AstNode> children)
+        protected override INode<AstNode> CreateConvertedNode(INode<AstNode> originalNode, IEnumerable<INode<AstNode>> children)
         {
             var childNodes = children.ToArray();
 

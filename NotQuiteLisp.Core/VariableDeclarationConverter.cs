@@ -4,6 +4,8 @@ using NotQuiteLisp.AST;
 
 namespace NotQuiteLisp.Core
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class VariableDeclarationConverter : ListConverter
     {
         public VariableDeclarationConverter()
@@ -11,7 +13,7 @@ namespace NotQuiteLisp.Core
         {
         }
 
-        protected override AstNode CreateConvertedNode(AstNode originalNode, IEnumerable<AstNode> children)
+        protected override INode<AstNode> CreateConvertedNode(INode<AstNode> originalNode, IEnumerable<INode<AstNode>> children)
         {
             var childNodes = children.ToArray();
             var variableNameNode = childNodes[1] as SymbolNode;

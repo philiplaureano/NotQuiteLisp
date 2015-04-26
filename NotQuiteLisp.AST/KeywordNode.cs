@@ -1,5 +1,7 @@
 ﻿namespace NotQuiteLisp.AST
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class KeywordNode : AtomNode
     {
         private readonly string _keyword;
@@ -17,7 +19,7 @@
             }
         }
 
-        public override AstNode Clone()
+        public override INode<AstNode> Clone()
         {
             return new KeywordNode(_keyword);
         }

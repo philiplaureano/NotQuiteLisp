@@ -7,6 +7,8 @@ using Shouldly;
 
 namespace NotQuiteLisp.AstTests
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     [TestClass]
     public class VariableDeclarationTests
     {
@@ -16,7 +18,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "(def text \"Hello, World!\")";
             var originalRootNode = inputText.CreateAstNodes();
 
-            IVisitor<AstNode, AstNode> converter = new VariableDeclarationConverter();
+            IVisitor<INode<AstNode>, INode<AstNode>> converter = new VariableDeclarationConverter();
             var outputNode = converter.Visit(originalRootNode);
 
             outputNode.Descendants().Any(d => d is VariableDefinitionNode).ShouldBe(true);
@@ -39,7 +41,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "((def x 321) (def y 123))";
             var originalRootNode = inputText.CreateAstNodes();
 
-            IVisitor<AstNode, AstNode> converter = new VariableDeclarationConverter();
+            IVisitor<INode<AstNode>, INode<AstNode>> converter = new VariableDeclarationConverter();
             var outputNode = converter.Visit(originalRootNode);
 
             var declarationNodes =

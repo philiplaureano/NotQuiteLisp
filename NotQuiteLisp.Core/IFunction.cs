@@ -2,8 +2,10 @@
 
 namespace NotQuiteLisp.Core
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public interface IFunction
     {
-        AstNode Eval(AstNode node);
+        INode<AstNode> Eval(INode<AstNode> node);
     }
 }

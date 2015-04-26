@@ -4,17 +4,19 @@ using NotQuiteLisp.AST;
 
 namespace NotQuiteLisp.Core
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public static class AstNodeExtensions
     {
-        public static IEnumerable<AstNode> Descendants(this AstNode node, int? maxDepth = null)
+        public static IEnumerable<INode<AstNode>> Descendants(this INode<AstNode> node, int? maxDepth = null)
         {
-            var descendants = new List<AstNode>();
+            var descendants = new List<INode<AstNode>>();
             AddDescendants(node, descendants, 0, maxDepth);
 
             return descendants;
         }
 
-        private static void AddDescendants(this AstNode node, IList<AstNode> descendants, int currentDepth, int? maxDepth = null)
+        private static void AddDescendants(this INode<AstNode> node, IList<INode<AstNode>> descendants, int currentDepth, int? maxDepth = null)
         {
             foreach (var child in node.Children)
             {

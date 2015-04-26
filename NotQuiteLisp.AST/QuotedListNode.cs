@@ -1,5 +1,7 @@
 namespace NotQuiteLisp.AST
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class QuotedListNode : ElementNode
     {
         private readonly ListNode _listNode;
@@ -17,7 +19,7 @@ namespace NotQuiteLisp.AST
             }
         }
 
-        public override System.Collections.Generic.IEnumerable<AstNode> Children
+        public override System.Collections.Generic.IEnumerable<INode<AstNode>> Children
         {
             get
             {
@@ -25,7 +27,7 @@ namespace NotQuiteLisp.AST
             }
         }
 
-        public override AstNode Clone()
+        public override INode<AstNode> Clone()
         {
             return new QuotedListNode((ListNode)_listNode.Clone());
         }

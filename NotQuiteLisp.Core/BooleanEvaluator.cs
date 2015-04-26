@@ -3,9 +3,11 @@ using NotQuiteLisp.AST;
 
 namespace NotQuiteLisp.Core
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class BooleanEvaluator : IFunction
     {
-        public AstNode Eval(AstNode node)
+        public INode<AstNode> Eval(INode<AstNode> node)
         {
             if (node == null)
                 throw new ArgumentNullException("node");
@@ -26,18 +28,18 @@ namespace NotQuiteLisp.Core
             throw new NotSupportedException(string.Format("Node type {0} not supported", node.GetType().Name));
         }
 
-        private AstNode Eval(NumberNode node)
+        private INode<AstNode> Eval(NumberNode node)
         {
             int value;
             var parsed = int.TryParse(node.Number, out value);
 
-            return parsed && value > 0 ? (AstNode)new TrueNode() : new FalseNode();
+            return parsed && value > 0 ? (INode<AstNode>)new TrueNode() : new FalseNode();
         }
 
-        private AstNode Eval(StringNode node)
+        private INode<AstNode> Eval(StringNode node)
         {
             var text = node.Text;
-            return string.IsNullOrEmpty(text) ? (AstNode)new FalseNode() : new TrueNode();
+            return string.IsNullOrEmpty(text) ? (INode<AstNode>)new FalseNode() : new TrueNode();
         }
     }
 }

@@ -1,20 +1,22 @@
 ﻿namespace NotQuiteLisp.AST
 {
+    using NotQuiteLisp.AST.Interfaces;
+
     public class VariableDefinitionNode : SymbolNode
     {
-        private readonly AstNode _value;
+        private readonly INode<AstNode> _value;
 
-        public VariableDefinitionNode(string variableName, AstNode value) : base(variableName)
+        public VariableDefinitionNode(string variableName, INode<AstNode> value) : base(variableName)
         {
             _value = value;
         }
 
-        public AstNode Value
+        public INode<AstNode> Value
         {
             get { return _value; }
         }
 
-        public override AstNode Clone()
+        public override INode<AstNode> Clone()
         {
             return new VariableDefinitionNode(Symbol, Value);
         }
