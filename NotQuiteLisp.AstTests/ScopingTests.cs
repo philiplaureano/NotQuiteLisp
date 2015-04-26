@@ -122,5 +122,24 @@ namespace NotQuiteLisp.AstTests
             resultScope.Resolve("message").ShouldNotBe(null);
             resultScope.Resolve("message").ShouldBeOfType<ParameterDefinitionNode>();
         }
+
+        [TestMethod]
+        public void Should_scope_variable_definitions()
+        {
+            var body = new ListNode(new VariableDefinitionNode("someBooleanValue", new FalseNode()));
+            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
+
+            var globalScope = new GlobalScope();
+
+            var builder = new ScopeBuilder(globalScope);
+            var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
+            resultScope.Resolve("message").ShouldNotBe(null);
+            resultScope.Resolve("message").ShouldBeOfType<ParameterDefinitionNode>();
+            resultScope.Resolve("someBooleanValue").ShouldNotBe(null);
+
+            var symbol = resultScope.Resolve("someBooleanValue") as VariableDefinitionNode;
+            symbol.ShouldNotBe(null);
+            symbol.Value.ShouldBeOfType<FalseNode>();
+        }
     }
 }

@@ -4,6 +4,7 @@ using NotQuiteLisp.Visitors;
 namespace NotQuiteLisp.Core
 {
     using System;
+    using System.Linq;
     using System.Linq.Expressions;
 
     using NotQuiteLisp.AST.Interfaces;
@@ -38,6 +39,21 @@ namespace NotQuiteLisp.Core
             foreach (var parameter in node.Parameters)
             {
                 methodScope.Define(parameter);
+            }
+
+            // Bind the variables
+            var body = node.MethodBody;
+            if (body == null) 
+                return boundScope;
+
+            var variableDeclarations = body.Children
+                .Select(n => n as VariableDefinitionNode)
+                .Where(n => n != null)
+                .ToArray();
+
+            foreach (var declaration in variableDeclarations)
+            {
+                methodScope.Define(declaration);
             }
 
             return boundScope;
