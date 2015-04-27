@@ -76,6 +76,25 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_scope_nested_operator_symbols_but_not_define_them()
+        {
+            var greatGrandChild = new OperatorNode("+");
+            var grandChildren = new INode<AstNode>[] { new ListNode(greatGrandChild) };
+
+            var children = new INode<AstNode>[] { new ListNode(grandChildren) };
+            var fakeScope = A.Fake<IScope>();
+
+            var rootNode = new RootNode(children);
+
+            var builder = new ScopeBuilder(fakeScope);
+            var rootScope = builder.Visit(rootNode);
+            rootScope.ShouldNotBe(null);
+            rootScope.Descendants().OfType<BoundScope>().Any().ShouldBe(true);
+
+            A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustNotHaveHappened();
+        }
+        
+        [TestMethod]
         public void Should_scope_nested_symbols_but_not_define_them()
         {
             var greatGrandChild = new SymbolNode("ghi");
