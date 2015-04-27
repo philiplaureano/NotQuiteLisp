@@ -2,11 +2,11 @@ namespace NotQuiteLisp.AST
 {
     using NotQuiteLisp.AST.Interfaces;
 
-    public class OperatorNode : AtomNode
+    public class OperatorNode : SymbolNode
     {
         private readonly string _operator;
 
-        public OperatorNode(string @operator)
+        public OperatorNode(string @operator) : base(@operator)
         {
             this._operator = @operator;
         }
