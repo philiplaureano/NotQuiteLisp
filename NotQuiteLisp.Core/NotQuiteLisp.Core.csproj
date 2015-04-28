@@ -57,6 +57,7 @@
     <Compile Include="ListConverter.cs" />
     <Compile Include="MethodDeclarationConverter.cs" />
     <Compile Include="MethodNotFoundException.cs" />
+    <Compile Include="MethodScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scope.cs" />
     <Compile Include="ScopeBuilder.cs" />

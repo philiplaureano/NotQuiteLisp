@@ -31,7 +31,11 @@ namespace NotQuiteLisp.Core
 
         public IBoundScope GetScope(MethodDefinitionNode node, IScope parentScope)
         {
-            var methodScope = new AnonymousScope(parentScope);
+            if (node == null) 
+                throw new ArgumentNullException("node");
+
+            var methodName = node.MethodName;
+            var methodScope = new MethodScope(methodName, parentScope);
             var boundScope = new BoundScope(methodScope, node);
 
             // Define the method itself

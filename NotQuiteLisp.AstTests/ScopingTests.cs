@@ -172,6 +172,7 @@ namespace NotQuiteLisp.AstTests
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
             resultScope.Resolve("sayMessage").ShouldNotBe(null);
             resultScope.Resolve("sayMessage").ShouldBeOfType<MethodDefinitionNode>();
+            resultScope.Name.ShouldBe("global/sayMessage");
         }
 
         [TestMethod]
