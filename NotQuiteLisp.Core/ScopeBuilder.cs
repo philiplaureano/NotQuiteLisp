@@ -21,7 +21,17 @@ namespace NotQuiteLisp.Core
 
         public IBoundScope Visit(AstNode subject)
         {
-            return (IBoundScope)this.Invoke("GetScope", subject);
+            try
+            {
+                var boundScope = (IBoundScope)this.Invoke("GetScope", subject);
+                return boundScope;
+            }
+            catch (MethodNotFoundException)
+            {                
+                // Ignore the error and bind the node to the root scope
+            }
+            
+            return new BoundScope(_rootScope, subject);
         }
 
         public IBoundScope GetScope(SymbolNode node, IScope parentScope)

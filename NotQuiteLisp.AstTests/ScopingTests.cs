@@ -193,5 +193,18 @@ namespace NotQuiteLisp.AstTests
             symbol.ShouldNotBe(null);
             symbol.Value.ShouldBeOfType<FalseNode>();
         }
+
+        [TestMethod]
+        public void Should_return_root_scope_by_default()
+        {
+            var globalScope = new GlobalScope();
+            var node = new TrueNode();
+            
+            var builder = new ScopeBuilder(globalScope);
+            var scope = builder.Visit(node);
+            scope.ShouldBeOfType<BoundScope>();
+            scope.TargetScope.ShouldBe(globalScope);
+            scope.Node.ShouldBe(node);
+        }
     }
 }
