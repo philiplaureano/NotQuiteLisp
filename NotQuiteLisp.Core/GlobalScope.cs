@@ -2,7 +2,7 @@
 
 namespace NotQuiteLisp.Core
 {
-    public class GlobalScope : Scope
+    public class GlobalScope : Scope, INamedScope
     {
         public GlobalScope() : base(null)
         {

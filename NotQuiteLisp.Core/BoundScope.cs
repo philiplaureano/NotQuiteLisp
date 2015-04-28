@@ -1,4 +1,6 @@
-﻿namespace NotQuiteLisp.Core
+﻿using System.Text;
+
+namespace NotQuiteLisp.Core
 {
     using System;
     using System.Collections.Generic;
@@ -48,7 +50,33 @@
         {
             get
             {
-                return _scope.Name;
+                var namedScope = _scope as INamedScope;
+                if (namedScope == null)
+                    return null;
+
+                var localName = namedScope.Name;
+
+                var parentScopeNames = new Stack<string>();
+                var parentScope = _scope.OuterScope;
+                while (parentScope != null)
+                {
+                    var currentNamedScope = parentScope as INamedScope;
+
+                    var parentName = currentNamedScope != null ? currentNamedScope.Name : "{anonymous}";
+                    parentScopeNames.Push(parentName);
+
+                    parentScope = parentScope.OuterScope;
+                }
+
+                var builder = new StringBuilder();
+                while (parentScopeNames.Count > 0)
+                {
+                    builder.Append(parentScopeNames.Pop());
+                    builder.Append("/");
+                }
+
+                builder.Append(localName);
+                return builder.ToString();
             }
         }
 
@@ -86,7 +114,7 @@
         }
 
         public override INode<IScope> Clone()
-        {            
+        {
             var clone = new BoundScope(_scope, _node, this.Children);
 
             return clone;

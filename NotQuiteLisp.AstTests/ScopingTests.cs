@@ -39,6 +39,20 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_return_entire_bound_scope_name_as_path_to_root_scope()
+        {
+            var fakeNode = A.Fake<INode<AstNode>>();
+            var fakeScope = A.Fake<INamedScope>();
+            A.CallTo(() => fakeScope.Name).Returns("FakeScope");
+
+            var globalScope = new GlobalScope();
+            A.CallTo(() => fakeScope.OuterScope).Returns(globalScope);
+
+            var boundScope = new BoundScope(fakeScope, fakeNode);
+            boundScope.Name.ShouldBe("global/FakeScope");
+        }
+
+        [TestMethod]
         public void Should_resolve_defined_symbol()
         {
             var symbol = new SymbolNode("foo");
@@ -93,7 +107,7 @@ namespace NotQuiteLisp.AstTests
 
             A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustNotHaveHappened();
         }
-        
+
         [TestMethod]
         public void Should_scope_nested_symbols_but_not_define_them()
         {
@@ -136,10 +150,10 @@ namespace NotQuiteLisp.AstTests
         public void Should_scope_parameters()
         {
             var body = new ListNode();
-            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[]{new ParameterDefinitionNode("message"), }, body);
+            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
 
             var globalScope = new GlobalScope();
-            
+
             var builder = new ScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
             resultScope.Resolve("message").ShouldNotBe(null);

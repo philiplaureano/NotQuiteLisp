@@ -2,7 +2,7 @@
 {
     using NotQuiteLisp.AST.Interfaces;
 
-    public interface IBoundScope : INode<IScope>, IScope
+    public interface IBoundScope : INode<IScope>, INamedScope
     {        
     }
 }
