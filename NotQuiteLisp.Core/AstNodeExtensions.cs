@@ -5,6 +5,7 @@ using NotQuiteLisp.AST;
 namespace NotQuiteLisp.Core
 {
     using System;
+    using System.Linq;
 
     using NotQuiteLisp.AST.Interfaces;
 
@@ -13,7 +14,7 @@ namespace NotQuiteLisp.Core
         public static IEnumerable<INode<T>> Descendants<T>(this INode<T> node, int? maxDepth = null)
         {
             var descendants = new List<INode<T>>();
-            node.Descend((currentDepth, currentNode)=> descendants.Add(currentNode));
+            node.Descend((currentDepth, currentNode) => descendants.Add(currentNode));
 
             return descendants;
         }
@@ -23,6 +24,14 @@ namespace NotQuiteLisp.Core
             int? maxDepth = null)
         {
             node.Descend(callbackFunc, 0, maxDepth);
+        }
+
+        public static int Height<T>(this INode<T> node)
+        {
+            var depths = new List<int>();
+            node.Descend((currentDepth, currentNode) => depths.Add(currentDepth), 1);
+
+            return depths.OrderByDescending(d => d).FirstOrDefault();
         }
 
         private static void Descend<T>(
