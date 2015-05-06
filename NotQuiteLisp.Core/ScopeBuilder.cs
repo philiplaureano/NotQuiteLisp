@@ -36,6 +36,10 @@ namespace NotQuiteLisp.Core
 
         public IBoundScope GetScope(SymbolNode node, IScope parentScope)
         {
+            // Method definitions don't count as scope references
+            if (node is MethodDefinitionNode) 
+                return GetScope(node as MethodDefinitionNode, parentScope);
+
             return new BoundScope(parentScope, node);
         }
 

@@ -8,6 +8,8 @@ using Shouldly;
 
 namespace NotQuiteLisp.AstTests
 {
+    using System.Collections.Generic;
+
     using FakeItEasy;
 
     [TestClass]
@@ -199,12 +201,27 @@ namespace NotQuiteLisp.AstTests
         {
             var globalScope = new GlobalScope();
             var node = new TrueNode();
-            
+
             var builder = new ScopeBuilder(globalScope);
             var scope = builder.Visit(node);
             scope.ShouldBeOfType<BoundScope>();
             scope.TargetScope.ShouldBe(globalScope);
             scope.Node.ShouldBe(node);
+        }
+
+        [TestMethod]
+        public void Should_be_able_to_determine_unresolved_symbols()
+        {
+            var globalScope = new GlobalScope();
+            var builder = new ScopeBuilder(globalScope);
+
+            var undefinedSymbol = new SymbolNode("unresolvedSymbol123");
+            var children = new List<AstNode>() { new MethodDefinitionNode("foo", new List<ParameterDefinitionNode>(), new TrueNode()), new ListNode(undefinedSymbol), new ListNode(new SymbolNode("foo")) };
+            
+            var rootNode = new RootNode(children);
+            var rootScope = builder.GetScope(rootNode);
+            rootScope.UnresolvedSymbols().Contains(undefinedSymbol).ShouldBe(true);           
+            rootScope.UnresolvedSymbols().Any(symbol=>symbol.Symbol=="foo").ShouldBe(false);
         }
     }
 }
