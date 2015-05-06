@@ -222,6 +222,8 @@ namespace NotQuiteLisp.AstTests
             var rootScope = builder.GetScope(rootNode);
             rootScope.UnresolvedSymbols().Contains(undefinedSymbol).ShouldBe(true);           
             rootScope.UnresolvedSymbols().Any(symbol=>symbol.Symbol=="foo").ShouldBe(false);
+
+            globalScope.Resolve("foo").ShouldNotBe(null);
         }
     }
 }
