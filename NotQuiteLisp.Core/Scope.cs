@@ -13,7 +13,7 @@ namespace NotQuiteLisp.Core
         private readonly ConcurrentDictionary<string, TItem> _symbols =
             new ConcurrentDictionary<string, TItem>();
 
-        private IScope<TItem> _outerScope;
+        private readonly IScope<TItem> _outerScope;
 
         protected Scope(IScope<TItem> outerScope)
         {
@@ -25,7 +25,6 @@ namespace NotQuiteLisp.Core
         public IScope<TItem> OuterScope
         {
             get { return _outerScope; }
-            set { _outerScope = value; }
         }
 
         public virtual void Define(TItem symbol)
