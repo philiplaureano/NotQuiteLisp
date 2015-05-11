@@ -35,7 +35,7 @@ namespace NotQuiteLisp.Core
                 throw new InvalidOperationException(string.Format("The symbol '{0}' has already been defined in the current scope", symbolName));
 
             // Check the parent scope
-            if (_outerScope != null && _outerScope.Resolve(symbolName) != null)
+            if (_outerScope != null && !ReferenceEquals(_outerScope.Resolve(symbolName), null))
                 throw new InvalidOperationException(string.Format("The symbol '{0}' has already been defined in the parent scope", symbolName));
 
             _symbols[symbolName] = symbol;
