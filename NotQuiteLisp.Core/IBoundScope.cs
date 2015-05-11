@@ -4,9 +4,10 @@ namespace NotQuiteLisp.Core
 {
     using NotQuiteLisp.AST.Interfaces;
 
-    public interface IBoundScope : INode<IScope>, INamedScope
+    public interface IBoundScope<TItem> : INode<IScope<TItem>>, INamedScope<TItem>
+        where TItem : ISymbol
     {
         INode<AstNode> Node { get; }
-        IScope TargetScope { get; }
+        IScope<TItem> TargetScope { get; }
     }
 }

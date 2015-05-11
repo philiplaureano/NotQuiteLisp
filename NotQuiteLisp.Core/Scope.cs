@@ -7,27 +7,28 @@ using NotQuiteLisp.AST.Interfaces;
 
 namespace NotQuiteLisp.Core
 {
-    public abstract class Scope : IScope
+    public abstract class Scope<TItem> : IScope<TItem>
+        where TItem : ISymbol
     {
-        private readonly ConcurrentDictionary<string, SymbolNode> _symbols =
-            new ConcurrentDictionary<string, SymbolNode>();
+        private readonly ConcurrentDictionary<string, TItem> _symbols =
+            new ConcurrentDictionary<string, TItem>();
 
-        private IScope _outerScope;
+        private IScope<TItem> _outerScope;
 
-        protected Scope(IScope outerScope)
+        protected Scope(IScope<TItem> outerScope)
         {
             _outerScope = outerScope;
         }
 
         public abstract string Name { get; }
 
-        public IScope OuterScope
+        public IScope<TItem> OuterScope
         {
             get { return _outerScope; }
             set { _outerScope = value; }
         }
 
-        public virtual void Define(SymbolNode symbol)
+        public virtual void Define(TItem symbol)
         {
             var symbolName = symbol.Symbol;
             if (_symbols.ContainsKey(symbolName))
@@ -40,7 +41,7 @@ namespace NotQuiteLisp.Core
             _symbols[symbolName] = symbol;
         }
 
-        public virtual SymbolNode Resolve(string name)
+        public virtual TItem Resolve(string name)
         {
             if (_symbols.ContainsKey(name))
                 return _symbols[name];
@@ -48,10 +49,10 @@ namespace NotQuiteLisp.Core
             if (_outerScope != null)
                 return _outerScope.Resolve(name);
 
-            return null;
+            return default(TItem);
         }
 
-        public IEnumerable<KeyValuePair<string, SymbolNode>> Symbols
+        public IEnumerable<KeyValuePair<string, TItem>> Symbols
         {
             get { return _symbols; }
         }

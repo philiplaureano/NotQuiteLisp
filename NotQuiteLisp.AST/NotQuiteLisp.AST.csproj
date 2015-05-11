@@ -47,10 +47,12 @@
     <Compile Include="BooleanNode.cs" />
     <Compile Include="ElementNode.cs" />
     <Compile Include="FalseNode.cs" />
+    <Compile Include="Interfaces\INameable.cs" />
     <Compile Include="Interfaces\INamedScope.cs" />
     <Compile Include="Interfaces\INode.cs" />
     <Compile Include="Interfaces\IScope.cs" />
     <Compile Include="Interfaces\IScopeReference.cs" />
+    <Compile Include="Interfaces\ISymbol.cs" />
     <Compile Include="KeyValuePairNode.cs" />
     <Compile Include="KeywordNode.cs" />
     <Compile Include="ListNode.cs" />

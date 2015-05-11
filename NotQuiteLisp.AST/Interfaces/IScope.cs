@@ -2,12 +2,13 @@
 
 namespace NotQuiteLisp.AST.Interfaces
 {
-    public interface IScope
+    public interface IScope<TItem>
+        where TItem : ISymbol
     {
-        IScope OuterScope { get; }
-        SymbolNode Resolve(string name);
-        void Define(SymbolNode symbol);
+        IScope<TItem> OuterScope { get; }
+        TItem Resolve(string name);
+        void Define(TItem symbol);
 
-        IEnumerable<KeyValuePair<string, SymbolNode>> Symbols { get; }
+        IEnumerable<KeyValuePair<string, TItem>> Symbols { get; }
     }
 }

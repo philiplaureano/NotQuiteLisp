@@ -2,9 +2,10 @@
 
 namespace NotQuiteLisp.Core
 {
-    public class AnonymousScope : Scope
+    public class AnonymousScope<TItem> : Scope<TItem>
+        where TItem : ISymbol
     {
-        public AnonymousScope(IScope outerScope) : base(outerScope)
+        public AnonymousScope(IScope<TItem> outerScope) : base(outerScope)
         {
         }
 

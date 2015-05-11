@@ -1,7 +1,8 @@
 ﻿namespace NotQuiteLisp.AST.Interfaces
 {
-    public interface IScopeReference
+    public interface IScopeReference<TItem>
+        where TItem : ISymbol
     {
-        IScope TargetScope { get; }
+        IScope<TItem> TargetScope { get; }
     }
 }

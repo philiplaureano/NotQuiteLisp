@@ -20,7 +20,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_throw_exception_when_defining_already_defined_symbol()
         {
             var symbol = new SymbolNode("foo");
-            var scope = new AnonymousScope(null);
+            var scope = new AnonymousScope<SymbolNode>(null);
 
             // Defining the same scope twice should cause an error
             scope.Define(symbol);
@@ -31,9 +31,9 @@ namespace NotQuiteLisp.AstTests
         [ExpectedException(typeof(InvalidOperationException), "The symbol 'foo' has already been defined in the parent scope")]
         public void Should_throw_exception_when_defining_already_defined_symbol_from_parent_scope()
         {
-            var parentScope = new AnonymousScope(null);
+            var parentScope = new AnonymousScope<SymbolNode>(null);
             var symbol = new SymbolNode("foo");
-            var scope = new AnonymousScope(parentScope);
+            var scope = new AnonymousScope<SymbolNode>(parentScope);
 
             // Defining the same scope twice should cause an error
             parentScope.Define(symbol);
@@ -44,13 +44,13 @@ namespace NotQuiteLisp.AstTests
         public void Should_return_entire_bound_scope_name_as_path_to_root_scope()
         {
             var fakeNode = A.Fake<INode<AstNode>>();
-            var fakeScope = A.Fake<INamedScope>();
+            var fakeScope = A.Fake<INamedScope<SymbolNode>>();
             A.CallTo(() => fakeScope.Name).Returns("FakeScope");
 
-            var globalScope = new GlobalScope();
+            var globalScope = new GlobalScope<SymbolNode>();
             A.CallTo(() => fakeScope.OuterScope).Returns(globalScope);
 
-            var boundScope = new BoundScope(fakeScope, fakeNode);
+            var boundScope = new BoundScope<SymbolNode>(fakeScope, fakeNode);
             boundScope.Name.ShouldBe("global/FakeScope");
         }
 
@@ -58,7 +58,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_resolve_defined_symbol()
         {
             var symbol = new SymbolNode("foo");
-            var scope = new AnonymousScope(null);
+            var scope = new AnonymousScope<SymbolNode>(null);
 
             scope.Define(symbol);
 
@@ -69,8 +69,8 @@ namespace NotQuiteLisp.AstTests
         public void Should_resolve_defined_symbol_in_parent_scope()
         {
             var symbol = new SymbolNode("foo");
-            var parentScope = new AnonymousScope(null);
-            var scope = new AnonymousScope(parentScope);
+            var parentScope = new AnonymousScope<SymbolNode>(null);
+            var scope = new AnonymousScope<SymbolNode>(parentScope);
 
             parentScope.Define(symbol);
 
@@ -82,13 +82,13 @@ namespace NotQuiteLisp.AstTests
         {
             var rootNode = new RootNode();
 
-            var builder = new ScopeBuilder(new GlobalScope());
-            var scope = builder.Visit(rootNode) as BoundScope;
-            scope.ShouldBeOfType<BoundScope>();
+            var builder = new ScopeBuilder(new GlobalScope<SymbolNode>());
+            var scope = builder.Visit(rootNode) as BoundScope<SymbolNode>;
+            scope.ShouldBeOfType<BoundScope<SymbolNode>>();
             scope.ShouldNotBe(null);
 
             scope.Node.ShouldBe(rootNode);
-            scope.TargetScope.ShouldBeOfType<GlobalScope>();
+            scope.TargetScope.ShouldBeOfType<GlobalScope<SymbolNode>>();
         }
 
         [TestMethod]
@@ -98,14 +98,14 @@ namespace NotQuiteLisp.AstTests
             var grandChildren = new INode<AstNode>[] { new ListNode(greatGrandChild) };
 
             var children = new INode<AstNode>[] { new ListNode(grandChildren) };
-            var fakeScope = A.Fake<IScope>();
+            var fakeScope = A.Fake<IScope<SymbolNode>>();
 
             var rootNode = new RootNode(children);
 
             var builder = new ScopeBuilder(fakeScope);
             var rootScope = builder.Visit(rootNode);
             rootScope.ShouldNotBe(null);
-            rootScope.Descendants().OfType<BoundScope>().Any().ShouldBe(true);
+            rootScope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
 
             A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustNotHaveHappened();
         }
@@ -117,14 +117,14 @@ namespace NotQuiteLisp.AstTests
             var grandChildren = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def"), new ListNode(greatGrandChild) };
 
             var children = new AstNode[] { new ListNode(grandChildren), };
-            var fakeScope = A.Fake<IScope>();
+            var fakeScope = A.Fake<IScope<SymbolNode>>();
 
             var rootNode = new RootNode(children);
 
             var builder = new ScopeBuilder(fakeScope);
             var rootScope = builder.Visit(rootNode);
             rootScope.ShouldNotBe(null);
-            rootScope.Descendants().OfType<BoundScope>().Any().ShouldBe(true);
+            rootScope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
 
             A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[0])).MustNotHaveHappened();
             A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[1])).MustNotHaveHappened();
@@ -135,7 +135,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_scope_symbols_but_not_define_them()
         {
             var children = new AstNode[] { new SymbolNode("abc"), new SymbolNode("def") };
-            var fakeScope = A.Fake<IScope>();
+            var fakeScope = A.Fake<IScope<SymbolNode>>();
 
             var rootNode = new RootNode(children);
 
@@ -143,7 +143,7 @@ namespace NotQuiteLisp.AstTests
             var scope = builder.Visit(rootNode);
             scope.ShouldNotBe(null);
 
-            scope.Descendants().OfType<BoundScope>().Any().ShouldBe(true);
+            scope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
             A.CallTo(() => fakeScope.Define((SymbolNode)children[0])).MustNotHaveHappened();
             A.CallTo(() => fakeScope.Define((SymbolNode)children[1])).MustNotHaveHappened();
         }
@@ -154,7 +154,7 @@ namespace NotQuiteLisp.AstTests
             var body = new ListNode();
             var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
 
-            var globalScope = new GlobalScope();
+            var globalScope = new GlobalScope<SymbolNode>();
 
             var builder = new ScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
@@ -168,7 +168,7 @@ namespace NotQuiteLisp.AstTests
             var body = new ListNode();
             var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
 
-            var globalScope = new GlobalScope();
+            var globalScope = new GlobalScope<SymbolNode>();
 
             var builder = new ScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
@@ -183,7 +183,7 @@ namespace NotQuiteLisp.AstTests
             var body = new ListNode(new VariableDefinitionNode("someBooleanValue", new FalseNode()));
             var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
 
-            var globalScope = new GlobalScope();
+            var globalScope = new GlobalScope<SymbolNode>();
 
             var builder = new ScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
@@ -199,12 +199,12 @@ namespace NotQuiteLisp.AstTests
         [TestMethod]
         public void Should_return_root_scope_by_default()
         {
-            var globalScope = new GlobalScope();
+            var globalScope = new GlobalScope<SymbolNode>();
             var node = new TrueNode();
 
             var builder = new ScopeBuilder(globalScope);
             var scope = builder.Visit(node);
-            scope.ShouldBeOfType<BoundScope>();
+            scope.ShouldBeOfType<BoundScope<SymbolNode>>();
             scope.TargetScope.ShouldBe(globalScope);
             scope.Node.ShouldBe(node);
         }
@@ -212,7 +212,7 @@ namespace NotQuiteLisp.AstTests
         [TestMethod]
         public void Should_be_able_to_determine_unresolved_symbols()
         {
-            var globalScope = new GlobalScope();
+            var globalScope = new GlobalScope<SymbolNode>();
             var builder = new ScopeBuilder(globalScope);
 
             var undefinedSymbol = new SymbolNode("unresolvedSymbol123");
@@ -220,7 +220,7 @@ namespace NotQuiteLisp.AstTests
 
             var rootNode = new RootNode(children);
             var rootScope = builder.GetScope(rootNode);
-            var boundScopes = rootScope.UnresolvedSymbols().OfType<IBoundScope>();
+            var boundScopes = rootScope.UnresolvedSymbols().OfType<IBoundScope<SymbolNode>>();
             boundScopes.ShouldNotBe(null);
 
             boundScopes.Select(b => b.Node).OfType<SymbolNode>().Any(s => s.Symbol == undefinedSymbol.Symbol).ShouldBe(true);

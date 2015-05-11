@@ -8,15 +8,16 @@
 
     public static class ScopeExtensions
     {
-        public static IEnumerable<IBoundScope> UnresolvedSymbols(this IBoundScope scope)
+        public static IEnumerable<IBoundScope<TItem>> UnresolvedSymbols<TItem>(this IBoundScope<TItem> scope)
+            where TItem : class, ISymbol
         {
-            var unresolvedSymbols = new List<IBoundScope>();
+            var unresolvedSymbols = new List<IBoundScope<TItem>>();
 
             var parentScope = scope;
-            Action<int, int, INode<IScope>> addUnresolvedSymbol
+            Action<int, int, INode<IScope<TItem>>> addUnresolvedSymbol
                 = (depth, childIndex, node) =>
                     {
-                        var boundScope = node as IBoundScope;
+                        var boundScope = node as IBoundScope<TItem>;
                         if (boundScope == null)
                             return;
 

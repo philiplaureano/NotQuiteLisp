@@ -2,7 +2,7 @@ namespace NotQuiteLisp.AST
 {
     using NotQuiteLisp.AST.Interfaces;
 
-    public class SymbolNode : AtomNode
+    public class SymbolNode : AtomNode, ISymbol
     {
         private readonly string _symbol;
 

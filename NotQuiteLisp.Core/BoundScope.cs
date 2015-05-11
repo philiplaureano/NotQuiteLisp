@@ -8,12 +8,13 @@ namespace NotQuiteLisp.Core
     using NotQuiteLisp.AST;
     using NotQuiteLisp.AST.Interfaces;
 
-    public class BoundScope : Node<IScope>, IBoundScope
+    public class BoundScope<TItem> : Node<IScope<TItem>>, IBoundScope<TItem>
+        where TItem : ISymbol
     {
-        private readonly IScope _scope;
+        private readonly IScope<TItem> _scope;
         private readonly INode<AstNode> _node;
 
-        public BoundScope(IScope scope, INode<AstNode> node)
+        public BoundScope(IScope<TItem> scope, INode<AstNode> node)
         {
             if (scope == null)
                 throw new ArgumentNullException("scope");
@@ -25,7 +26,7 @@ namespace NotQuiteLisp.Core
             _node = node;
         }
 
-        public BoundScope(IScope scope, INode<AstNode> node, IEnumerable<INode<IScope>> childNodes)
+        public BoundScope(IScope<TItem> scope, INode<AstNode> node, IEnumerable<INode<IScope<TItem>>> childNodes)
             : base(childNodes)
         {
             if (scope == null)
@@ -50,7 +51,7 @@ namespace NotQuiteLisp.Core
         {
             get
             {
-                var namedScope = _scope as INamedScope;
+                var namedScope = _scope as INameable;
                 if (namedScope == null)
                     return null;
 
@@ -60,7 +61,7 @@ namespace NotQuiteLisp.Core
                 var parentScope = _scope.OuterScope;
                 while (parentScope != null)
                 {
-                    var currentNamedScope = parentScope as INamedScope;
+                    var currentNamedScope = parentScope as INameable;
 
                     var parentName = currentNamedScope != null ? currentNamedScope.Name : "{anonymous}";
                     parentScopeNames.Push(parentName);
@@ -80,7 +81,7 @@ namespace NotQuiteLisp.Core
             }
         }
 
-        public IScope OuterScope
+        public IScope<TItem> OuterScope
         {
             get
             {
@@ -88,24 +89,24 @@ namespace NotQuiteLisp.Core
             }
         }
 
-        public IScope TargetScope
+        public IScope<TItem> TargetScope
         {
             get
             {
                 return _scope;
             }
         }
-        public SymbolNode Resolve(string name)
+        public TItem Resolve(string name)
         {
             return _scope.Resolve(name);
         }
 
-        public void Define(SymbolNode symbol)
+        public void Define(TItem symbol)
         {
             _scope.Define(symbol);
         }
 
-        public IEnumerable<KeyValuePair<string, SymbolNode>> Symbols
+        public IEnumerable<KeyValuePair<string, TItem>> Symbols
         {
             get
             {
@@ -113,9 +114,9 @@ namespace NotQuiteLisp.Core
             }
         }
 
-        public override INode<IScope> Clone()
+        public override INode<IScope<TItem>> Clone()
         {
-            var clone = new BoundScope(_scope, _node, this.Children);
+            var clone = new BoundScope<TItem>(_scope, _node, this.Children);
 
             return clone;
         }

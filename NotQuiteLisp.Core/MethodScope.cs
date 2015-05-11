@@ -2,11 +2,12 @@
 
 namespace NotQuiteLisp.Core
 {
-    public class MethodScope : Scope, INamedScope
+    public class MethodScope<TItem> : Scope<TItem>, INamedScope<TItem>
+        where TItem : ISymbol
     {
         private readonly string _methodName;
 
-        public MethodScope(string methodName, IScope outerScope) : base(outerScope)
+        public MethodScope(string methodName, IScope<TItem> outerScope) : base(outerScope)
         {
             _methodName = methodName;
         }

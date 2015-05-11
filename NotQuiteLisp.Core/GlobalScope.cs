@@ -2,7 +2,8 @@
 
 namespace NotQuiteLisp.Core
 {
-    public class GlobalScope : Scope, INamedScope
+    public class GlobalScope<TItem> : Scope<TItem>, INamedScope<TItem>
+        where TItem : ISymbol
     {
         public GlobalScope() : base(null)
         {
