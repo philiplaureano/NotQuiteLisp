@@ -62,7 +62,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scope.cs" />
     <Compile Include="ScopeBuilder.cs" />
-    <Compile Include="SymbolNodeScopeBuilder.cs" />
     <Compile Include="ScopeExtensions.cs" />
     <Compile Include="SymbolNodeScopingStrategy.cs" />
     <Compile Include="TreeMap.cs" />

@@ -82,7 +82,7 @@ namespace NotQuiteLisp.AstTests
         {
             var rootNode = new RootNode();
 
-            var builder = new SymbolNodeScopeBuilder(new GlobalScope<SymbolNode>());
+            var builder = CreateScopeBuilder(new GlobalScope<SymbolNode>());
             var scope = builder.Visit(rootNode) as BoundScope<SymbolNode>;
             scope.ShouldBeOfType<BoundScope<SymbolNode>>();
             scope.ShouldNotBe(null);
@@ -102,7 +102,7 @@ namespace NotQuiteLisp.AstTests
 
             var rootNode = new RootNode(children);
 
-            var builder = new SymbolNodeScopeBuilder(fakeScope);
+            var builder = CreateScopeBuilder(fakeScope);
             var rootScope = builder.Visit(rootNode);
             rootScope.ShouldNotBe(null);
             rootScope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
@@ -121,7 +121,7 @@ namespace NotQuiteLisp.AstTests
 
             var rootNode = new RootNode(children);
 
-            var builder = new SymbolNodeScopeBuilder(fakeScope);
+            var builder = CreateScopeBuilder(fakeScope);
             var rootScope = builder.Visit(rootNode);
             rootScope.ShouldNotBe(null);
             rootScope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
@@ -139,7 +139,7 @@ namespace NotQuiteLisp.AstTests
 
             var rootNode = new RootNode(children);
 
-            var builder = new SymbolNodeScopeBuilder(fakeScope);
+            var builder = CreateScopeBuilder(fakeScope);
             var scope = builder.Visit(rootNode);
             scope.ShouldNotBe(null);
 
@@ -156,7 +156,7 @@ namespace NotQuiteLisp.AstTests
 
             var globalScope = new GlobalScope<SymbolNode>();
 
-            var builder = new SymbolNodeScopeBuilder(globalScope);
+            var builder = CreateScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
             resultScope.Resolve("message").ShouldNotBe(null);
             resultScope.Resolve("message").ShouldBeOfType<ParameterDefinitionNode>();
@@ -170,7 +170,7 @@ namespace NotQuiteLisp.AstTests
 
             var globalScope = new GlobalScope<SymbolNode>();
 
-            var builder = new SymbolNodeScopeBuilder(globalScope);
+            var builder = CreateScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
             resultScope.Resolve("sayMessage").ShouldNotBe(null);
             resultScope.Resolve("sayMessage").ShouldBeOfType<MethodDefinitionNode>();
@@ -185,7 +185,7 @@ namespace NotQuiteLisp.AstTests
 
             var globalScope = new GlobalScope<SymbolNode>();
 
-            var builder = new SymbolNodeScopeBuilder(globalScope);
+            var builder = CreateScopeBuilder(globalScope);
             var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
             resultScope.Resolve("message").ShouldNotBe(null);
             resultScope.Resolve("message").ShouldBeOfType<ParameterDefinitionNode>();
@@ -202,7 +202,7 @@ namespace NotQuiteLisp.AstTests
             var globalScope = new GlobalScope<SymbolNode>();
             var node = new TrueNode();
 
-            var builder = new SymbolNodeScopeBuilder(globalScope);
+            var builder = CreateScopeBuilder(globalScope);
             var scope = builder.Visit(node);
             scope.ShouldBeOfType<BoundScope<SymbolNode>>();
             scope.TargetScope.ShouldBe(globalScope);
@@ -213,7 +213,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_be_able_to_determine_unresolved_symbols()
         {
             var globalScope = new GlobalScope<SymbolNode>();
-            var builder = new SymbolNodeScopeBuilder(globalScope);
+            var builder = CreateScopeBuilder(globalScope);
 
             var undefinedSymbol = new SymbolNode("unresolvedSymbol123");
             var children = new List<AstNode>() { new MethodDefinitionNode("foo", new List<ParameterDefinitionNode>(), new TrueNode()), new ListNode(undefinedSymbol), new ListNode(new SymbolNode("foo")) };
@@ -227,6 +227,11 @@ namespace NotQuiteLisp.AstTests
             boundScopes.Select(b => b.Node).OfType<SymbolNode>().Any(s => s.Symbol == "foo").ShouldBe(false);
 
             globalScope.Resolve("foo").ShouldNotBe(null);
+        }
+
+        private ScopeBuilder<SymbolNode> CreateScopeBuilder(IScope<SymbolNode> scope)
+        {
+            return new ScopeBuilder<SymbolNode>(scope, new SymbolNodeScopingStrategy());
         }
     }
 }
