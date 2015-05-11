@@ -53,6 +53,7 @@
     <Compile Include="GlobalScope.cs" />
     <Compile Include="IBoundScope.cs" />
     <Compile Include="IFunction.cs" />
+    <Compile Include="IScopingStrategy.cs" />
     <Compile Include="LateBindingExtensions.cs" />
     <Compile Include="ListConverter.cs" />
     <Compile Include="MethodDeclarationConverter.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="ScopeBuilder.cs" />
     <Compile Include="SymbolNodeScopeBuilder.cs" />
     <Compile Include="ScopeExtensions.cs" />
+    <Compile Include="SymbolNodeScopingStrategy.cs" />
     <Compile Include="TreeMap.cs" />
     <Compile Include="TreeMapper.cs" />
     <Compile Include="VariableDeclarationConverter.cs" />

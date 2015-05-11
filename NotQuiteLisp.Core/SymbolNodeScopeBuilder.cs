@@ -9,24 +9,9 @@ namespace NotQuiteLisp.Core
 
     public class SymbolNodeScopeBuilder : ScopeBuilder<SymbolNode>
     {
-        public SymbolNodeScopeBuilder(IScope<SymbolNode> rootScope) : base(rootScope)
+        public SymbolNodeScopeBuilder(IScope<SymbolNode> rootScope) : base(rootScope, new SymbolNodeScopingStrategy())
         {
-        }
-
-        protected override void Define(ParameterDefinitionNode node, IScope<SymbolNode> parentScope)
-        {
-            parentScope.Define(node);
-        }
-
-        protected override void Define(MethodDefinitionNode node, IScope<SymbolNode> parentScope)
-        {
-            parentScope.Define(node);
-        }
-
-        protected override void Define(VariableDefinitionNode node, IScope<SymbolNode> parentScope)
-        {
-            parentScope.Define(node);
-        }
+        }        
     }
 
 }

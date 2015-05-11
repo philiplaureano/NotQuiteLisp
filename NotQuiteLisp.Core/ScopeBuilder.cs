@@ -6,14 +6,17 @@ using NotQuiteLisp.Visitors;
 
 namespace NotQuiteLisp.Core
 {
-    public abstract class ScopeBuilder<TItem> : IVisitor<AstNode, IBoundScope<TItem>>
+    public class ScopeBuilder<TItem> : IVisitor<AstNode, IBoundScope<TItem>>
         where TItem : ISymbol
     {
         private readonly IScope<TItem> _rootScope;
 
-        protected ScopeBuilder(IScope<TItem> rootScope)
+        private readonly IScopingStrategy<TItem> _scopingStrategy;
+
+        public ScopeBuilder(IScope<TItem> rootScope, IScopingStrategy<TItem> scopingStrategy)
         {
             this._rootScope = rootScope;
+            this._scopingStrategy = scopingStrategy;
         }
 
         public IBoundScope<TItem> Visit(AstNode subject)
@@ -50,12 +53,12 @@ namespace NotQuiteLisp.Core
             var boundScope = new BoundScope<TItem>(methodScope, node);
 
             // Define the method itself
-            Define(node, parentScope);
+            _scopingStrategy.Define(node, parentScope);
 
             // Bind the parameters
             foreach (var parameter in node.Parameters)
             {
-                Define(parameter, methodScope);
+                _scopingStrategy.Define(parameter, methodScope);
             }
 
             // Bind the variables
@@ -70,7 +73,7 @@ namespace NotQuiteLisp.Core
 
             foreach (var declaration in variableDeclarations)
             {
-                Define(declaration, methodScope);
+                _scopingStrategy.Define(declaration, methodScope);
             }
 
             return boundScope;
@@ -93,9 +96,5 @@ namespace NotQuiteLisp.Core
 
             return new BoundScope<TItem>(_rootScope, node, childScopes);
         }
-
-        protected abstract void Define(ParameterDefinitionNode node, IScope<TItem> parentScope);
-        protected abstract void Define(MethodDefinitionNode node, IScope<TItem> parentScope);
-        protected abstract void Define(VariableDefinitionNode node, IScope<TItem> parentScope);
     }
 }
