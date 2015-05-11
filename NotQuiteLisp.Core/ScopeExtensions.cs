@@ -8,9 +8,9 @@
 
     public static class ScopeExtensions
     {
-        public static IEnumerable<SymbolNode> UnresolvedSymbols(this IBoundScope scope)
+        public static IEnumerable<IBoundScope> UnresolvedSymbols(this IBoundScope scope)
         {
-            var unresolvedSymbols = new List<SymbolNode>();
+            var unresolvedSymbols = new List<IBoundScope>();
 
             var parentScope = scope;
             Action<int, INode<IScope>> addUnresolvedSymbol
@@ -25,7 +25,7 @@
                             return;
 
                         if (parentScope.Resolve(symbolNode.Symbol) == null)
-                            unresolvedSymbols.Add(symbolNode);
+                            unresolvedSymbols.Add(boundScope);
                     };
 
             scope.Descend(addUnresolvedSymbol);

@@ -217,11 +217,14 @@ namespace NotQuiteLisp.AstTests
 
             var undefinedSymbol = new SymbolNode("unresolvedSymbol123");
             var children = new List<AstNode>() { new MethodDefinitionNode("foo", new List<ParameterDefinitionNode>(), new TrueNode()), new ListNode(undefinedSymbol), new ListNode(new SymbolNode("foo")) };
-            
+
             var rootNode = new RootNode(children);
             var rootScope = builder.GetScope(rootNode);
-            rootScope.UnresolvedSymbols().Contains(undefinedSymbol).ShouldBe(true);           
-            rootScope.UnresolvedSymbols().Any(symbol=>symbol.Symbol=="foo").ShouldBe(false);
+            var boundScopes = rootScope.UnresolvedSymbols().OfType<IBoundScope>();
+            boundScopes.ShouldNotBe(null);
+
+            boundScopes.Select(b => b.Node).OfType<SymbolNode>().Any(s => s.Symbol == undefinedSymbol.Symbol).ShouldBe(true);
+            boundScopes.Select(b => b.Node).OfType<SymbolNode>().Any(s => s.Symbol == "foo").ShouldBe(false);
 
             globalScope.Resolve("foo").ShouldNotBe(null);
         }
