@@ -13,8 +13,8 @@
             var unresolvedSymbols = new List<IBoundScope>();
 
             var parentScope = scope;
-            Action<int, INode<IScope>> addUnresolvedSymbol
-                = (depth, node) =>
+            Action<int, int, INode<IScope>> addUnresolvedSymbol
+                = (depth, childIndex, node) =>
                     {
                         var boundScope = node as IBoundScope;
                         if (boundScope == null)
