@@ -84,9 +84,9 @@ namespace NotQuiteLisp.Core
             // Bind the method body
             var subBuilder = new ScopeBuilder<TItem>(methodScope, _scopingStrategy);
             var bodyScope = subBuilder.Visit(body);
-            
+
             var boundScope = new BoundScope<TItem>(methodScope, node, new[] { bodyScope });
-            
+
             return boundScope;
         }
 
@@ -111,6 +111,7 @@ namespace NotQuiteLisp.Core
         {
             var childScopes = node.Children
                 .Select(child => (IBoundScope<TItem>)this.Invoke("GetScope", child, parentScope))
+                .Where(child => child != null)
                 .ToList();
 
             return new BoundScope<TItem>(parentScope, node, childScopes);
@@ -120,6 +121,7 @@ namespace NotQuiteLisp.Core
         {
             var childScopes = node.Children
                 .Select(child => (IBoundScope<TItem>)this.Invoke("GetScope", child, this._rootScope))
+                .Where(child => child != null)
                 .ToList();
 
             return new BoundScope<TItem>(_rootScope, node, childScopes);
