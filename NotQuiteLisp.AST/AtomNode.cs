@@ -1,3 +1,5 @@
+using NotQuiteLisp.AST.Interfaces;
+
 namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
@@ -8,7 +10,7 @@ namespace NotQuiteLisp.AST
         {
         }
 
-        protected AtomNode(IEnumerable<AstNode> childNodes)
+        protected AtomNode(IEnumerable<INode<AstNode>> childNodes)
             : base(childNodes)
         {
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NotQuiteLisp.AST.Interfaces;
 using NotQuiteLisp.Parser;
 using ANTLR4.ParserHelpers;
 using NotQuiteLisp.Parser;
@@ -13,16 +14,16 @@ namespace NotQuiteLisp.Visitors
 
     using NotQuiteLisp.AST;
 
-    public class ParseTreeConverter : NQLBaseVisitor<AstNode>
+    public class ParseTreeConverter : NQLBaseVisitor<INode<AstNode>>
     {
-        public override AstNode VisitMap(NotQuiteLisp.Parser.NQLParser.MapContext context)
+        public override INode<AstNode> VisitMap(NotQuiteLisp.Parser.NQLParser.MapContext context)
         {
             var childNodes = GetChildAstNodes(context);
 
             return new MapNode(childNodes.Cast<KeyValuePairNode>().Where(node => node != null));
         }
 
-        public override AstNode VisitKeyValuePair(NotQuiteLisp.Parser.NQLParser.KeyValuePairContext context)
+        public override INode<AstNode> VisitKeyValuePair(NotQuiteLisp.Parser.NQLParser.KeyValuePairContext context)
         {
             var pair = context;
             var children = pair.Children().ToArray();
@@ -41,7 +42,7 @@ namespace NotQuiteLisp.Visitors
             return new KeyValuePairNode(key, value);
         }
 
-        public override AstNode VisitCompileUnit(NQLParser.CompileUnitContext context)
+        public override INode<AstNode> VisitCompileUnit(NQLParser.CompileUnitContext context)
         {
             var childNodes = GetChildAstNodes(context);
 
@@ -49,7 +50,7 @@ namespace NotQuiteLisp.Visitors
             return rootNode;
         }
 
-        public override AstNode VisitSet(NotQuiteLisp.Parser.NQLParser.SetContext context)
+        public override INode<AstNode> VisitSet(NotQuiteLisp.Parser.NQLParser.SetContext context)
         {
             var children = GetChildAstNodes(context);
 
@@ -57,7 +58,7 @@ namespace NotQuiteLisp.Visitors
             return setNode;
         }
 
-        public override AstNode VisitVector(NotQuiteLisp.Parser.NQLParser.VectorContext context)
+        public override INode<AstNode> VisitVector(NotQuiteLisp.Parser.NQLParser.VectorContext context)
         {
             var children = GetChildAstNodes(context);
 
@@ -65,7 +66,7 @@ namespace NotQuiteLisp.Visitors
             return vectorNode;
         }
 
-        public override AstNode VisitAtom(NotQuiteLisp.Parser.NQLParser.AtomContext context)
+        public override INode<AstNode> VisitAtom(NotQuiteLisp.Parser.NQLParser.AtomContext context)
         {
             var children = context.Children().ToArray();
 
@@ -76,7 +77,7 @@ namespace NotQuiteLisp.Visitors
             return Visit(firstChild);
         }
 
-        public override AstNode VisitList(NotQuiteLisp.Parser.NQLParser.ListContext context)
+        public override INode<AstNode> VisitList(NotQuiteLisp.Parser.NQLParser.ListContext context)
         {
             var children = GetChildAstNodes(context);
 
@@ -84,7 +85,7 @@ namespace NotQuiteLisp.Visitors
             return listNode;
         }
 
-        public override AstNode VisitQuotedList(NotQuiteLisp.Parser.NQLParser.QuotedListContext context)
+        public override INode<AstNode> VisitQuotedList(NotQuiteLisp.Parser.NQLParser.QuotedListContext context)
         {
             var children = context.Children().ToArray();
             if (children.Count() < 2)
@@ -96,7 +97,7 @@ namespace NotQuiteLisp.Visitors
             return listNode != null ? new QuotedListNode(listNode) : base.VisitQuotedList(context);
         }
 
-        public override AstNode VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode node)
+        public override INode<AstNode> VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode node)
         {
             var payload = (CommonToken)node.Payload;
 
@@ -135,12 +136,12 @@ namespace NotQuiteLisp.Visitors
             return base.VisitTerminal(node);
         }
 
-        private IEnumerable<AstNode> GetChildAstNodes(IParseTree context)
+        private IEnumerable<INode<AstNode>> GetChildAstNodes(IParseTree context)
         {
             return GetChildAstNodes(context, this.Visit);
         }
 
-        private static IEnumerable<AstNode> GetChildAstNodes(IParseTree context, Func<IParseTree, AstNode> visitFunc)
+        private static IEnumerable<INode<AstNode>> GetChildAstNodes(IParseTree context, Func<IParseTree, INode<AstNode>> visitFunc)
         {
             return context.Children()
                 .Select(visitFunc)

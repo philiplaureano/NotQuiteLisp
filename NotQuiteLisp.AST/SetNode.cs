@@ -1,4 +1,6 @@
-﻿namespace NotQuiteLisp.AST
+﻿using NotQuiteLisp.AST.Interfaces;
+
+namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
 
@@ -9,7 +11,7 @@
         {
         }
 
-        public SetNode(IEnumerable<AstNode> childNodes)
+        public SetNode(IEnumerable<INode<AstNode>> childNodes)
             : base(childNodes)
         {
         }

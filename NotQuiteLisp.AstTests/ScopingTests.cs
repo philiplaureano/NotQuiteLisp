@@ -178,6 +178,20 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_scope_method_body()
+        {
+            var fooNode = new SymbolNode("foo");
+            var body = new ListNode(fooNode);
+            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
+
+            var globalScope = new GlobalScope<SymbolNode>();
+
+            var builder = CreateScopeBuilder(globalScope);
+            var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
+            resultScope.Descendants().OfType<BoundScope<SymbolNode>>().Any(scope => scope.Node == fooNode).ShouldBe(true);
+        }
+
+        [TestMethod]
         public void Should_scope_variable_definitions()
         {
             var body = new ListNode(new VariableDefinitionNode("someBooleanValue", new FalseNode()));
@@ -216,7 +230,7 @@ namespace NotQuiteLisp.AstTests
             var builder = CreateScopeBuilder(globalScope);
 
             var undefinedSymbol = new SymbolNode("unresolvedSymbol123");
-            var children = new List<AstNode>() { new MethodDefinitionNode("foo", new List<ParameterDefinitionNode>(), new TrueNode()), new ListNode(undefinedSymbol), new ListNode(new SymbolNode("foo")) };
+            var children = new List<INode<AstNode>>() { new MethodDefinitionNode("foo", new List<ParameterDefinitionNode>(), new TrueNode()), new ListNode(undefinedSymbol), new ListNode(new SymbolNode("foo")) };
 
             var rootNode = new RootNode(children);
             var rootScope = builder.GetScope(rootNode);
