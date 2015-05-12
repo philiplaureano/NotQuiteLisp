@@ -192,6 +192,20 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_not_scope_atom_nodes()
+        {
+            var fooNode = new NumberNode("123");
+            var body = new ListNode(fooNode);
+            var methodDefinitionNode = new MethodDefinitionNode("sayMessage", new ParameterDefinitionNode[] { new ParameterDefinitionNode("message"), }, body);
+
+            var globalScope = new GlobalScope<SymbolNode>();
+
+            var builder = CreateScopeBuilder(globalScope);
+            var resultScope = builder.GetScope(methodDefinitionNode, globalScope);
+            resultScope.Descendants().OfType<BoundScope<SymbolNode>>().Any(scope => scope.Node == fooNode).ShouldBe(false);
+        }
+
+        [TestMethod]
         public void Should_scope_variable_definitions()
         {
             var body = new ListNode(new VariableDefinitionNode("someBooleanValue", new FalseNode()));
@@ -214,7 +228,7 @@ namespace NotQuiteLisp.AstTests
         public void Should_return_root_scope_by_default()
         {
             var globalScope = new GlobalScope<SymbolNode>();
-            var node = new TrueNode();
+            var node = new SymbolNode("abc");
 
             var builder = CreateScopeBuilder(globalScope);
             var scope = builder.Visit(node);

@@ -41,10 +41,13 @@ namespace NotQuiteLisp.Core
             var childIndex = 0;
             foreach (var child in node.Children)
             {
-                child.Descend(callbackFunc, currentDepth + 1, maxDepth);
+                if (child != null)
+                {
+                    child.Descend(callbackFunc, currentDepth + 1, maxDepth);
 
-                if (maxDepth == null || (currentDepth < maxDepth.Value))
-                    callbackFunc(currentDepth, childIndex, child);
+                    if (maxDepth == null || (currentDepth < maxDepth.Value))
+                        callbackFunc(currentDepth, childIndex, child);
+                }
 
                 childIndex++;
             }

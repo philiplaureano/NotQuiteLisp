@@ -34,6 +34,11 @@ namespace NotQuiteLisp.Core
             return new BoundScope<TItem>(_rootScope, subject);
         }
 
+        public IBoundScope<TItem> GetScope(SymbolNode node)
+        {
+            return GetScope(node, _rootScope);
+        }
+
         public IBoundScope<TItem> GetScope(SymbolNode node, IScope<TItem> parentScope)
         {
             // Method definitions don't count as scope references
@@ -88,6 +93,18 @@ namespace NotQuiteLisp.Core
         public IBoundScope<TItem> GetScope(ListNode node)
         {
             return GetScope(node, _rootScope);
+        }
+
+        public IBoundScope<TItem> GetScope(AtomNode node)
+        {
+            // Ignore atom nodes
+            return null;
+        }
+
+        public IBoundScope<TItem> GetScope(AtomNode node, IScope<TItem> parentScope)
+        {
+            // Ignore atom nodes
+            return null;
         }
 
         public IBoundScope<TItem> GetScope(ListNode node, IScope<TItem> parentScope)
