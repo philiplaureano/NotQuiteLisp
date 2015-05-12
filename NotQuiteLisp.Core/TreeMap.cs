@@ -6,17 +6,16 @@ using NotQuiteLisp.AST;
 namespace NotQuiteLisp.Core
 {
     using NotQuiteLisp.AST.Interfaces;
-
-    public class TreeMap
+    public class TreeMap<TItem>
     {
-        private readonly ConcurrentDictionary<INode<AstNode>, INode<AstNode>> _parentMap = new ConcurrentDictionary<INode<AstNode>, INode<AstNode>>();
+        private readonly ConcurrentDictionary<INode<TItem>, INode<TItem>> _parentMap = new ConcurrentDictionary<INode<TItem>, INode<TItem>>();
 
-        public INode<AstNode> GetParentFor(INode<AstNode> child)
+        public INode<TItem> GetParentFor(INode<TItem> child)
         {
             return _parentMap.ContainsKey(child) ? _parentMap[child] : null;
         }
 
-        public void SetParentFor(INode<AstNode> child, INode<AstNode> parent)
+        public void SetParentFor(INode<TItem> child, INode<TItem> parent)
         {
             if (child == null)
                 throw new ArgumentNullException("child");
@@ -24,9 +23,9 @@ namespace NotQuiteLisp.Core
             _parentMap[child] = parent;
         }
 
-        public LinkedList<INode<AstNode>> GetRootAncestryFor(INode<AstNode> descendantNode)
+        public LinkedList<INode<TItem>> GetRootAncestryFor(INode<TItem> descendantNode)
         {
-            var results = new LinkedList<INode<AstNode>>();
+            var results = new LinkedList<INode<TItem>>();
             results.AddFirst(descendantNode);
 
             var parentNode = GetParentFor(descendantNode);
@@ -38,5 +37,5 @@ namespace NotQuiteLisp.Core
 
             return results;
         }
-    }
+    }    
 }

@@ -18,7 +18,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "(def my-name \"Me\")";
 
             var rootNode = inputText.CreateAstNodes();
-            var nodeMapper = new TreeMapper();
+            var nodeMapper = new TreeMapper<AstNode>();
             var map = nodeMapper.CreateMap(rootNode);
 
             var children = rootNode.Children;
@@ -34,7 +34,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "(keyword1 keyword2 (keyword3 keyword4 (keyword5 keyword6)))";
 
             var rootNode = inputText.CreateAstNodes();
-            var nodeMapper = new TreeMapper();
+            var nodeMapper = new TreeMapper<AstNode>();
             var map = nodeMapper.CreateMap(rootNode);
 
             var topNode = (ListNode)rootNode.Children.First();
@@ -51,7 +51,7 @@ namespace NotQuiteLisp.AstTests
         {
             var inputText = "(parent (child))";
             var rootNode = inputText.CreateAstNodes();
-            var nodeMapper = new TreeMapper();
+            var nodeMapper = new TreeMapper<AstNode>();
             var map = nodeMapper.CreateMap(rootNode);
 
             var descendants = rootNode.Descendants().ToArray();
