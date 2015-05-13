@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NotQuiteLisp.AST.Interfaces;
 using NotQuiteLisp.Core;
 using NotQuiteLisp.Parser;
 namespace NotQuiteLisp.AstTests
@@ -74,7 +75,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "#{1 2 3}";
             var converter = new ParseTreeConverter();
             var tree = inputText.ParseWith<NqlLanguage>();
-            AstNode root = converter.Visit(tree);
+            INode<AstNode> root = converter.Visit(tree);
 
             root.ShouldNotBe(null);
             root.Children.Count().ShouldBe(1);
@@ -90,7 +91,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = ":keyword123";
             var converter = new ParseTreeConverter();
             var tree = inputText.ParseWith<NqlLanguage>();
-            AstNode root = converter.Visit(tree);
+            INode<AstNode> root = converter.Visit(tree);
 
             root.ShouldNotBe(null);
             root.Children.Count().ShouldBe(1);
@@ -106,7 +107,7 @@ namespace NotQuiteLisp.AstTests
 
             var tree = inputText.ParseWith<NqlLanguage>();
             var converter = new ParseTreeConverter();
-            AstNode root = converter.Visit(tree);
+            INode<AstNode> root = converter.Visit(tree);
 
             root.ShouldNotBe(null);
             root.Children.Count().ShouldBe(1);
@@ -139,7 +140,7 @@ namespace NotQuiteLisp.AstTests
             var converter = new ParseTreeConverter();
 
             var tree = inputText.ParseWith<NqlLanguage>();
-            AstNode root = converter.Visit(tree);
+            INode<AstNode> root = converter.Visit(tree);
 
             root.ShouldNotBe(null);
             root.Children.Count().ShouldBe(1);

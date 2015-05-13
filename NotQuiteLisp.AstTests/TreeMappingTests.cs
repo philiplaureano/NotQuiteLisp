@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ANTLR4.ParserHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NotQuiteLisp.AST;
@@ -10,7 +11,7 @@ using Shouldly;
 namespace NotQuiteLisp.AstTests
 {
     [TestClass]
-    public class ParentNodeMappingTests
+    public class TreeMappingTests
     {
         [TestMethod]
         public void Should_be_able_to_determine_parent_from_given_node()
@@ -18,7 +19,7 @@ namespace NotQuiteLisp.AstTests
             var inputText = "(def my-name \"Me\")";
 
             var rootNode = inputText.CreateAstNodes();
-            var nodeMapper = new TreeMapper();
+            var nodeMapper = new TreeMapper<AstNode>();
             var map = nodeMapper.CreateMap(rootNode);
 
             var children = rootNode.Children;
@@ -29,12 +30,25 @@ namespace NotQuiteLisp.AstTests
         }
 
         [TestMethod]
+        public void Should_be_able_to_determine_siblings_from_given_node()
+        {
+            var inputText = "(def my-name \"Me\")";
+
+            var rootNode = inputText.CreateAstNodes();
+            var nodeMapper = new TreeMapper<AstNode>();
+            var map = nodeMapper.CreateMap(rootNode);
+
+            var defNode = rootNode.Descendants().OfType<SymbolNode>().First(s => s.Symbol == "def");
+            map.GetSiblingsFor(defNode).Count().ShouldBe(2);
+        }
+
+        [TestMethod]
         public void Should_be_able_to_determine_parent_from_nested_node()
         {
             var inputText = "(keyword1 keyword2 (keyword3 keyword4 (keyword5 keyword6)))";
 
             var rootNode = inputText.CreateAstNodes();
-            var nodeMapper = new TreeMapper();
+            var nodeMapper = new TreeMapper<AstNode>();
             var map = nodeMapper.CreateMap(rootNode);
 
             var topNode = (ListNode)rootNode.Children.First();
@@ -51,7 +65,7 @@ namespace NotQuiteLisp.AstTests
         {
             var inputText = "(parent (child))";
             var rootNode = inputText.CreateAstNodes();
-            var nodeMapper = new TreeMapper();
+            var nodeMapper = new TreeMapper<AstNode>();
             var map = nodeMapper.CreateMap(rootNode);
 
             var descendants = rootNode.Descendants().ToArray();
