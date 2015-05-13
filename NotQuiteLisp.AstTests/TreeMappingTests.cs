@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ANTLR4.ParserHelpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NotQuiteLisp.AST;
@@ -10,7 +11,7 @@ using Shouldly;
 namespace NotQuiteLisp.AstTests
 {
     [TestClass]
-    public class ParentNodeMappingTests
+    public class TreeMappingTests
     {
         [TestMethod]
         public void Should_be_able_to_determine_parent_from_given_node()
@@ -26,6 +27,19 @@ namespace NotQuiteLisp.AstTests
             {
                 map.GetParentFor(child).ShouldBe(rootNode);
             }
+        }
+
+        [TestMethod]
+        public void Should_be_able_to_determine_siblings_from_given_node()
+        {
+            var inputText = "(def my-name \"Me\")";
+
+            var rootNode = inputText.CreateAstNodes();
+            var nodeMapper = new TreeMapper<AstNode>();
+            var map = nodeMapper.CreateMap(rootNode);
+
+            var defNode = rootNode.Descendants().OfType<SymbolNode>().First(s => s.Symbol == "def");
+            map.GetSiblingsFor(defNode).Count().ShouldBe(2);
         }
 
         [TestMethod]

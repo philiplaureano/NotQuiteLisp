@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using NotQuiteLisp.AST;
 
 namespace NotQuiteLisp.Core
@@ -10,9 +11,20 @@ namespace NotQuiteLisp.Core
     {
         private readonly ConcurrentDictionary<INode<TItem>, INode<TItem>> _parentMap = new ConcurrentDictionary<INode<TItem>, INode<TItem>>();
 
+        private readonly ConcurrentDictionary<INode<TItem>, IEnumerable<INode<TItem>>> _siblingMap =
+            new ConcurrentDictionary<INode<TItem>, IEnumerable<INode<TItem>>>();
+
         public INode<TItem> GetParentFor(INode<TItem> child)
         {
             return _parentMap.ContainsKey(child) ? _parentMap[child] : null;
+        }
+
+        public IEnumerable<INode<TItem>> GetSiblingsFor(INode<TItem> node)
+        {
+            if (_siblingMap.ContainsKey(node))
+                return _siblingMap[node];
+
+            return new INode<TItem>[0];
         }
 
         public void SetParentFor(INode<TItem> child, INode<TItem> parent)
@@ -21,6 +33,13 @@ namespace NotQuiteLisp.Core
                 throw new ArgumentNullException("child");
 
             _parentMap[child] = parent;
+
+            if (parent == null)
+                return;
+
+            // Map the siblings
+            var siblings = parent.Children.Where(c => c.NodeId != child.NodeId);
+            _siblingMap[child] = siblings;
         }
 
         public LinkedList<INode<TItem>> GetRootAncestryFor(INode<TItem> descendantNode)

@@ -71,7 +71,7 @@
     <Compile Include="LateBindingTests.cs" />
     <Compile Include="MethodDeclarationTests.cs" />
     <Compile Include="NodeExtensionTests.cs" />
-    <Compile Include="ParentNodeMappingTests.cs" />
+    <Compile Include="TreeMappingTests.cs" />
     <Compile Include="ParseTreeToAstConversionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleSilentVisitor.cs" />
