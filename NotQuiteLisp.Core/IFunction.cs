@@ -4,7 +4,7 @@ namespace NotQuiteLisp.Core
 {
     using NotQuiteLisp.AST.Interfaces;
 
-    public interface IFunction
+    public interface IFunction : ISymbol
     {
         INode<AstNode> Eval(INode<AstNode> node);
     }

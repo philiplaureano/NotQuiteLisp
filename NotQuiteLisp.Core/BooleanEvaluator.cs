@@ -41,5 +41,13 @@ namespace NotQuiteLisp.Core
             var text = node.Text;
             return string.IsNullOrEmpty(text) ? (INode<AstNode>)new FalseNode() : new TrueNode();
         }
+
+        public string Symbol
+        {
+            get
+            {
+                return "boolean-eval";
+            }
+        }
     }
 }
