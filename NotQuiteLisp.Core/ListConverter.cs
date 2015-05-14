@@ -51,15 +51,7 @@ namespace NotQuiteLisp.Core
         }
 
         public INode<AstNode> Visit(RootNode rootNode)
-        {
-            var targetListNodeIds = GetListNodeIds(rootNode);
-
-            // Map all the declarations in the tree
-            foreach (var currentId in targetListNodeIds)
-            {
-                _declarations.Add(currentId);
-            }
-
+        {            
             // Visit the child nodes
             var clonedChildren = rootNode.Children.Select(Visit);
             return new RootNode(clonedChildren);
@@ -69,29 +61,14 @@ namespace NotQuiteLisp.Core
 
         protected abstract bool ShouldBeConverted(SymbolNode symbolNode);
 
-        protected abstract INode<AstNode> CreateConvertedNode(INode<AstNode> originalNode, IEnumerable<INode<AstNode>> children);
-
-        private static IEnumerable<Guid> GetListNodeIds(INode<AstNode> rootNode)
-        {
-            // Search for the lists that match the target symbol
-            var listNodes = rootNode.Descendants().Where(d => d.GetType() == typeof(ListNode)).Cast<ListNode>();
-            var nonEmptyNodes = listNodes.Where(l => l.Children.Any());
-            var declarationNodes = nonEmptyNodes.Where(l =>
-            {
-                var symbolNode = l.Children.First() as SymbolNode;
-                return symbolNode != null;
-            });
-
-            var targetListNodeIds = declarationNodes.Select(node => node.NodeId);
-            return targetListNodeIds;
-        }
+        protected abstract INode<AstNode> CreateConvertedNode(INode<AstNode> originalNode, IEnumerable<INode<AstNode>> children);        
 
         private bool ShouldBeConverted(INode<AstNode> node, SymbolNode symbolNode)
         {
             if (node == null || symbolNode == null)
                 return false;
 
-            return ShouldBeConverted(symbolNode) && _declarations.Contains(node.NodeId);
+            return ShouldBeConverted(symbolNode) && node is ListNode;
         }
     }
 }
