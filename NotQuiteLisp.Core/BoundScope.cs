@@ -9,7 +9,6 @@ namespace NotQuiteLisp.Core
     using NotQuiteLisp.AST.Interfaces;
 
     public class BoundScope<TItem> : Node<IScope<TItem>>, IBoundScope<TItem>
-        where TItem : ISymbol
     {
         private readonly IScope<TItem> _scope;
         private readonly INode<AstNode> _node;
@@ -101,9 +100,9 @@ namespace NotQuiteLisp.Core
             return _scope.Resolve(name);
         }
 
-        public void Define(TItem symbol)
+        public void Define(string symbolName, TItem item)
         {
-            _scope.Define(symbol);
+            _scope.Define(symbolName, item);
         }
 
         public IEnumerable<KeyValuePair<string, TItem>> Symbols

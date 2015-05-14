@@ -23,8 +23,8 @@ namespace NotQuiteLisp.AstTests
             var scope = new AnonymousScope<SymbolNode>(null);
 
             // Defining the same scope twice should cause an error
-            scope.Define(symbol);
-            scope.Define(symbol);
+            scope.Define(symbol.Symbol, symbol);
+            scope.Define(symbol.Symbol, symbol);
         }
 
         [TestMethod]
@@ -36,8 +36,8 @@ namespace NotQuiteLisp.AstTests
             var scope = new AnonymousScope<SymbolNode>(parentScope);
 
             // Defining the same scope twice should cause an error
-            parentScope.Define(symbol);
-            scope.Define(symbol);
+            parentScope.Define(symbol.Symbol, symbol);
+            scope.Define(symbol.Symbol, symbol);
         }
 
         [TestMethod]
@@ -60,7 +60,7 @@ namespace NotQuiteLisp.AstTests
             var symbol = new SymbolNode("foo");
             var scope = new AnonymousScope<SymbolNode>(null);
 
-            scope.Define(symbol);
+            scope.Define(symbol.Symbol, symbol);
 
             scope.Resolve("foo").ShouldBe(symbol);
         }
@@ -72,7 +72,7 @@ namespace NotQuiteLisp.AstTests
             var parentScope = new AnonymousScope<SymbolNode>(null);
             var scope = new AnonymousScope<SymbolNode>(parentScope);
 
-            parentScope.Define(symbol);
+            parentScope.Define(symbol.Symbol, symbol);
 
             scope.Resolve("foo").ShouldBe(symbol);
         }
@@ -107,7 +107,7 @@ namespace NotQuiteLisp.AstTests
             rootScope.ShouldNotBe(null);
             rootScope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
 
-            A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define("+", greatGrandChild)).MustNotHaveHappened();
         }
 
         [TestMethod]
@@ -126,9 +126,9 @@ namespace NotQuiteLisp.AstTests
             rootScope.ShouldNotBe(null);
             rootScope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
 
-            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[0])).MustNotHaveHappened();
-            A.CallTo(() => fakeScope.Define((SymbolNode)grandChildren[1])).MustNotHaveHappened();
-            A.CallTo(() => fakeScope.Define((SymbolNode)greatGrandChild)).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define("abc", (SymbolNode)grandChildren[0])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define("def", (SymbolNode)grandChildren[1])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define("ghi", (SymbolNode)greatGrandChild)).MustNotHaveHappened();
         }
 
         [TestMethod]
@@ -144,8 +144,8 @@ namespace NotQuiteLisp.AstTests
             scope.ShouldNotBe(null);
 
             scope.Descendants().OfType<BoundScope<SymbolNode>>().Any().ShouldBe(true);
-            A.CallTo(() => fakeScope.Define((SymbolNode)children[0])).MustNotHaveHappened();
-            A.CallTo(() => fakeScope.Define((SymbolNode)children[1])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define("abc", (SymbolNode)children[0])).MustNotHaveHappened();
+            A.CallTo(() => fakeScope.Define("def", (SymbolNode)children[1])).MustNotHaveHappened();
         }
 
         [TestMethod]

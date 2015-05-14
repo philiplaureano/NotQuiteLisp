@@ -3,11 +3,10 @@
 namespace NotQuiteLisp.AST.Interfaces
 {
     public interface IScope<TItem>
-        where TItem : ISymbol
     {
         IScope<TItem> OuterScope { get; }
         TItem Resolve(string name);
-        void Define(TItem symbol);
+        void Define(string name, TItem item);
 
         IEnumerable<KeyValuePair<string, TItem>> Symbols { get; }
     }

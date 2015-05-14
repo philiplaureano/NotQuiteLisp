@@ -27,9 +27,9 @@ namespace NotQuiteLisp.Core
             get { return _outerScope; }
         }
 
-        public virtual void Define(TItem symbol)
+        public virtual void Define(string name, TItem item)
         {
-            var symbolName = symbol.Symbol;
+            var symbolName = name;
             if (_symbols.ContainsKey(symbolName))
                 throw new InvalidOperationException(string.Format("The symbol '{0}' has already been defined in the current scope", symbolName));
 
@@ -37,7 +37,7 @@ namespace NotQuiteLisp.Core
             if (_outerScope != null && !ReferenceEquals(_outerScope.Resolve(symbolName), null))
                 throw new InvalidOperationException(string.Format("The symbol '{0}' has already been defined in the parent scope", symbolName));
 
-            _symbols[symbolName] = symbol;
+            _symbols[symbolName] = item;
         }
 
         public virtual TItem Resolve(string name)
