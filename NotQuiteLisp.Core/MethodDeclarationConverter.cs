@@ -9,7 +9,7 @@
 
     using Visitors;
 
-    public class MethodDeclarationConverter : ListConverter
+    public class MethodDeclarationConverter : SpecificListConverter
     {
         public MethodDeclarationConverter()
             : base(3, "defn")

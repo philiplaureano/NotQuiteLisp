@@ -1,34 +1,17 @@
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using NotQuiteLisp.AST;
+using NotQuiteLisp.AST.Interfaces;
+using NotQuiteLisp.Visitors;
+
 namespace NotQuiteLisp.Core
 {
-    using System;
-    using System.Collections.Concurrent;
-    using System.Collections.Generic;
-    using System.Linq;
-    using AST;
-
-    using NotQuiteLisp.AST.Interfaces;
-
-    using Visitors;
-
     public abstract class ListConverter : AstVisitor<INode<AstNode>>
     {
         private readonly ConcurrentBag<Guid> _declarations = new ConcurrentBag<Guid>();
-        private readonly int _expectedParameterCount;
-
-        protected ListConverter(int expectedParameterCount, string targetSymbol)
-        {
-            if (expectedParameterCount < 0)
-                throw new ArgumentOutOfRangeException("expectedParameterCount");
-
-            if (string.IsNullOrEmpty(targetSymbol))
-                throw new ArgumentException("The target symbol cannot be a null or empty string.", "targetSymbol");
-
-            _expectedParameterCount = expectedParameterCount;
-            _targetSymbol = targetSymbol;
-        }
-
-        private readonly string _targetSymbol;
-
+        
         public override INode<AstNode> Visit(INode<AstNode> subject)
         {
             if (subject == null)
@@ -55,21 +38,21 @@ namespace NotQuiteLisp.Core
 
             // Ignore non-declaration nodes
             var symbolNode = node.Children.First() as SymbolNode;
-            if (symbolNode == null || symbolNode.Symbol != _targetSymbol || !_declarations.Contains(node.NodeId))
+            if (!ShouldBeConverted(node, symbolNode)) 
                 return new ListNode(clonedChildren);
 
             var children = node.Children.ToArray();
 
-            // Validate the number of arguments
-            if (children.Length != _expectedParameterCount + 1)
-                return new ListNode(clonedChildren);
+            // Validate the child nodes
+            if (HasValidChildNodes(node, children)) 
+                return CreateConvertedNode(node, clonedChildren);
 
-            return CreateConvertedNode(node, clonedChildren);
+            return new ListNode(clonedChildren);
         }
 
         public INode<AstNode> Visit(RootNode rootNode)
         {
-            var targetListNodeIds = GetListNodeIds(rootNode, _targetSymbol);
+            var targetListNodeIds = GetListNodeIds(rootNode);
 
             // Map all the declarations in the tree
             foreach (var currentId in targetListNodeIds)
@@ -82,9 +65,13 @@ namespace NotQuiteLisp.Core
             return new RootNode(clonedChildren);
         }
 
+        protected abstract bool HasValidChildNodes(INode<AstNode> parent, INode<AstNode>[] children);
+
+        protected abstract bool ShouldBeConverted(SymbolNode symbolNode);
+
         protected abstract INode<AstNode> CreateConvertedNode(INode<AstNode> originalNode, IEnumerable<INode<AstNode>> children);
 
-        private static IEnumerable<Guid> GetListNodeIds(INode<AstNode> rootNode, string targetSymbol)
+        private static IEnumerable<Guid> GetListNodeIds(INode<AstNode> rootNode)
         {
             // Search for the lists that match the target symbol
             var listNodes = rootNode.Descendants().Where(d => d.GetType() == typeof(ListNode)).Cast<ListNode>();
@@ -92,11 +79,19 @@ namespace NotQuiteLisp.Core
             var declarationNodes = nonEmptyNodes.Where(l =>
             {
                 var symbolNode = l.Children.First() as SymbolNode;
-                return symbolNode != null && symbolNode.Symbol == targetSymbol;
+                return symbolNode != null;
             });
 
             var targetListNodeIds = declarationNodes.Select(node => node.NodeId);
             return targetListNodeIds;
+        }
+
+        private bool ShouldBeConverted(INode<AstNode> node, SymbolNode symbolNode)
+        {
+            if (node == null || symbolNode == null)
+                return false;
+
+            return ShouldBeConverted(symbolNode) && _declarations.Contains(node.NodeId);
         }
     }
 }

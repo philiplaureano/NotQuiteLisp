@@ -56,6 +56,7 @@
     <Compile Include="IScopingStrategy.cs" />
     <Compile Include="LateBindingExtensions.cs" />
     <Compile Include="ListConverter.cs" />
+    <Compile Include="SpecificListConverter.cs" />
     <Compile Include="MethodDeclarationConverter.cs" />
     <Compile Include="MethodNotFoundException.cs" />
     <Compile Include="MethodScope.cs" />

@@ -6,7 +6,7 @@ namespace NotQuiteLisp.Core
 {
     using NotQuiteLisp.AST.Interfaces;
 
-    public class VariableDeclarationConverter : ListConverter
+    public class VariableDeclarationConverter : SpecificListConverter
     {
         public VariableDeclarationConverter()
             : base(2, "def")
