@@ -9,22 +9,22 @@ namespace NotQuiteLisp.AST
 
     public class MapNode : ElementNode
     {
-        public MapNode(IEnumerable<KeyValuePairNode> entries) : base(entries)
+        public MapNode(IEnumerable<PairNode> entries) : base(entries)
         {
         }
 
-        public IEnumerable<KeyValuePairNode> Entries
+        public IEnumerable<PairNode> Entries
         {
             get
             {
-                return Children.Select(child => child as KeyValuePairNode)
+                return Children.Select(child => child as PairNode)
                     .Where(child => child != null);
             }
         }
 
         public override INode<AstNode> Clone()
         {
-            var clonedEntries = Entries.Select(kvp => (KeyValuePairNode)kvp.Clone());
+            var clonedEntries = Entries.Select(kvp => (PairNode)kvp.Clone());
             return new MapNode(clonedEntries);
         }
     }
