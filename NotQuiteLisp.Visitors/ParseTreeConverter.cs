@@ -18,7 +18,7 @@ namespace NotQuiteLisp.Visitors
         {
             var childNodes = GetChildAstNodes(context);
 
-            return new MapNode(childNodes.Cast<KeyValuePairNode>().Where(node => node != null));
+            return new MapNode(childNodes.OfType<KeyValuePairNode>());
         }
 
         public override INode<AstNode> VisitKeyValuePair(NotQuiteLisp.Parser.NQLParser.KeyValuePairContext context)
