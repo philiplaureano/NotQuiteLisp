@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NotQuiteLisp.Parser
+﻿namespace NotQuiteLisp.Parser
 {
     using ANTLR4.ParserHelpers;
 

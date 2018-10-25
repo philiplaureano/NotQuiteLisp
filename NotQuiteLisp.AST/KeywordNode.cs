@@ -8,14 +8,14 @@
 
         public KeywordNode(string keyword)
         {
-            this._keyword = keyword;
+            _keyword = keyword;
         }
 
         public string Keyword
         {
             get
             {
-                return this._keyword;
+                return _keyword;
             }
         }
 

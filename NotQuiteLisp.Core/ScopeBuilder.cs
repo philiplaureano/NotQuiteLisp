@@ -15,8 +15,8 @@ namespace NotQuiteLisp.Core
 
         public ScopeBuilder(IScope<TItem> rootScope, IScopingStrategy<TItem> scopingStrategy)
         {
-            this._rootScope = rootScope;
-            this._scopingStrategy = scopingStrategy;
+            _rootScope = rootScope;
+            _scopingStrategy = scopingStrategy;
         }
 
         public IBoundScope<TItem> Visit(INode<AstNode> subject)
@@ -120,7 +120,7 @@ namespace NotQuiteLisp.Core
         public IBoundScope<TItem> GetScope(RootNode node)
         {
             var childScopes = node.Children
-                .Select(child => (IBoundScope<TItem>)this.Invoke("GetScope", child, this._rootScope))
+                .Select(child => (IBoundScope<TItem>)this.Invoke("GetScope", child, _rootScope))
                 .Where(child => child != null)
                 .ToList();
 

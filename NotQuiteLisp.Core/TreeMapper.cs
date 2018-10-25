@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NotQuiteLisp.AST;
-
-namespace NotQuiteLisp.Core
+﻿namespace NotQuiteLisp.Core
 {
     using NotQuiteLisp.AST.Interfaces;
 

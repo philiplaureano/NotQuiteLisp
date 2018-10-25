@@ -115,7 +115,7 @@ namespace NotQuiteLisp.Core
 
         public override INode<IScope<TItem>> Clone()
         {
-            var clone = new BoundScope<TItem>(_scope, _node, this.Children);
+            var clone = new BoundScope<TItem>(_scope, _node, Children);
 
             return clone;
         }

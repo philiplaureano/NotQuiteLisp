@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using NotQuiteLisp.AST;
 using NotQuiteLisp.AST.Interfaces;
 
 namespace NotQuiteLisp.Core
