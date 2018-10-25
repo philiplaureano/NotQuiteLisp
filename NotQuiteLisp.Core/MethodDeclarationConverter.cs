@@ -1,13 +1,10 @@
 ﻿namespace NotQuiteLisp.Core
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using AST;
 
     using NotQuiteLisp.AST.Interfaces;
-
-    using Visitors;
 
     public class MethodDeclarationConverter : SpecificListConverter
     {

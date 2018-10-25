@@ -9,15 +9,15 @@ namespace ANTLR4.ParserHelpers
 
         public TreeBuilder(ILanguageStrategy strategy)
         {
-            this._strategy = strategy;
+            _strategy = strategy;
         }
 
         public IParseTree CreateTree(ICharStream charStream)
         {
-            var lexer = this._strategy.CreateTokenSource(charStream);
-            var tokenStream = this._strategy.CreateTokenStream(lexer);
+            var lexer = _strategy.CreateTokenSource(charStream);
+            var tokenStream = _strategy.CreateTokenStream(lexer);
 
-            return this._strategy.CreateParseTree(tokenStream);
+            return _strategy.CreateParseTree(tokenStream);
         }
     }
 }

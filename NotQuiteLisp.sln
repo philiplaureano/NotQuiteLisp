@@ -1,21 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotQuiteLisp.AST", "NotQuiteLisp.AST\NotQuiteLisp.AST.csproj", "{A3E34647-3C14-4F9A-B2E6-EDA2D8474BFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotQuiteLisp.AST", "NotQuiteLisp.AST\NotQuiteLisp.AST.csproj", "{A3E34647-3C14-4F9A-B2E6-EDA2D8474BFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ANTLR4.ParserHelpers", "ANTLR4.ParserHelpers\ANTLR4.ParserHelpers.csproj", "{B597F76D-CAE6-427C-8954-5FFBE529E2F0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotQuiteLisp.Parser", "NotQuiteLisp.Parser\NotQuiteLisp.Parser.csproj", "{E46155BB-98F2-47DE-BDBD-8183A20061D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ANTLR4.ParserHelpers", "ANTLR4.ParserHelpers\ANTLR4.ParserHelpers.csproj", "{B597F76D-CAE6-427C-8954-5FFBE529E2F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotQuiteLisp.ParserTests", "NotQuiteLisp.ParserTests\NotQuiteLisp.ParserTests.csproj", "{B93A9A5A-95F3-41C7-A90E-1BBB6568EFB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B597F76D-CAE6-427C-8954-5FFBE529E2F0} = {B597F76D-CAE6-427C-8954-5FFBE529E2F0}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotQuiteLisp.AstTests", "NotQuiteLisp.AstTests\NotQuiteLisp.AstTests.csproj", "{C1B6C075-BEE4-43EE-85E0-CF6DE09B8109}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotQuiteLisp.Visitors", "NotQuiteLisp.Visitors\NotQuiteLisp.Visitors.csproj", "{AB9535A0-5366-4B5A-BF07-6C2022D4305B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotQuiteLisp.Core", "NotQuiteLisp.Core\NotQuiteLisp.Core.csproj", "{61027D1A-A106-46EC-BC07-51AA3FFEC976}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotQuiteLisp.Parser", "NotQuiteLisp.Parser\NotQuiteLisp.Parser.csproj", "{CD077D35-1609-4FD7-BF22-A11A1CC07739}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B597F76D-CAE6-427C-8954-5FFBE529E2F0} = {B597F76D-CAE6-427C-8954-5FFBE529E2F0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +37,6 @@ Global
 		{B597F76D-CAE6-427C-8954-5FFBE529E2F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B597F76D-CAE6-427C-8954-5FFBE529E2F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B597F76D-CAE6-427C-8954-5FFBE529E2F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E46155BB-98F2-47DE-BDBD-8183A20061D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E46155BB-98F2-47DE-BDBD-8183A20061D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E46155BB-98F2-47DE-BDBD-8183A20061D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E46155BB-98F2-47DE-BDBD-8183A20061D5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B93A9A5A-95F3-41C7-A90E-1BBB6568EFB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B93A9A5A-95F3-41C7-A90E-1BBB6568EFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B93A9A5A-95F3-41C7-A90E-1BBB6568EFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,8 +53,15 @@ Global
 		{61027D1A-A106-46EC-BC07-51AA3FFEC976}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61027D1A-A106-46EC-BC07-51AA3FFEC976}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61027D1A-A106-46EC-BC07-51AA3FFEC976}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD077D35-1609-4FD7-BF22-A11A1CC07739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD077D35-1609-4FD7-BF22-A11A1CC07739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD077D35-1609-4FD7-BF22-A11A1CC07739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD077D35-1609-4FD7-BF22-A11A1CC07739}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {10F3E690-4CAD-49D5-A942-506D13944081}
 	EndGlobalSection
 EndGlobal

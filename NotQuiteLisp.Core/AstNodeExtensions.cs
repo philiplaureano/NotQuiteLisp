@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Cryptography;
-using NotQuiteLisp.AST;
 
 namespace NotQuiteLisp.Core
 {

@@ -18,19 +18,19 @@ namespace NotQuiteLisp.AST
 
         protected Node(IEnumerable<INode<T>> childNodes)
         {
-            this._childNodes = new List<INode<T>>(childNodes);
+            _childNodes = new List<INode<T>>(childNodes);
         }
 
         public Guid NodeId
         {
-            get { return this._nodeId; }
+            get { return _nodeId; }
         }
 
         public virtual IEnumerable<INode<T>> Children
         {
             get
             {
-                return this._childNodes;
+                return _childNodes;
             }
         }
 

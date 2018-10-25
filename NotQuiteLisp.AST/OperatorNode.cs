@@ -8,14 +8,14 @@ namespace NotQuiteLisp.AST
 
         public OperatorNode(string @operator) : base(@operator)
         {
-            this._operator = @operator;
+            _operator = @operator;
         }
 
         public string Operator
         {
             get
             {
-                return this._operator;
+                return _operator;
             }
         }
 

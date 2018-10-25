@@ -8,14 +8,14 @@ namespace NotQuiteLisp.AST
 
         public NumberNode(string numberText)
         {
-            this._numberText = numberText;
+            _numberText = numberText;
         }
 
         public string Number
         {
             get
             {
-                return this._numberText;
+                return _numberText;
             }
         }
 
