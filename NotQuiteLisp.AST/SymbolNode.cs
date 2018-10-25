@@ -8,14 +8,14 @@ namespace NotQuiteLisp.AST
 
         public SymbolNode(string symbol)
         {
-            this._symbol = symbol;
+            _symbol = symbol;
         }
 
         public string Symbol
         {
             get
             {
-                return this._symbol;
+                return _symbol;
             }
         }
 

@@ -8,14 +8,14 @@ namespace NotQuiteLisp.AST
 
         public QuotedListNode(ListNode listNode)
         {
-            this._listNode = listNode;
+            _listNode = listNode;
         }
 
         public ListNode ListNode
         {
             get
             {
-                return this._listNode;
+                return _listNode;
             }
         }
 

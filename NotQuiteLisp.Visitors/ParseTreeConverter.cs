@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using ANTLR4.ParserHelpers;
 using NotQuiteLisp.AST.Interfaces;
 using NotQuiteLisp.Parser;
-using ANTLR4.ParserHelpers;
-using NotQuiteLisp.Parser;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NotQuiteLisp.Visitors
 {
@@ -20,7 +18,7 @@ namespace NotQuiteLisp.Visitors
         {
             var childNodes = GetChildAstNodes(context);
 
-            return new MapNode(childNodes.Cast<KeyValuePairNode>().Where(node => node != null));
+            return new MapNode(childNodes.OfType<KeyValuePairNode>());
         }
 
         public override INode<AstNode> VisitKeyValuePair(NotQuiteLisp.Parser.NQLParser.KeyValuePairContext context)
@@ -138,7 +136,7 @@ namespace NotQuiteLisp.Visitors
 
         private IEnumerable<INode<AstNode>> GetChildAstNodes(IParseTree context)
         {
-            return GetChildAstNodes(context, this.Visit);
+            return GetChildAstNodes(context, Visit);
         }
 
         private static IEnumerable<INode<AstNode>> GetChildAstNodes(IParseTree context, Func<IParseTree, INode<AstNode>> visitFunc)

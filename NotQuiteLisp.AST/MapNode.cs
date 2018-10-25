@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace NotQuiteLisp.AST
+﻿namespace NotQuiteLisp.AST
 {
     using System.Collections.Generic;
     using System.Linq;
